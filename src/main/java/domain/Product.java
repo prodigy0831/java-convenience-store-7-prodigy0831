@@ -11,11 +11,21 @@ public class Product {
         this.price = price;
         this.quantity = quantity;
         this.promotion = promotion;
-
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public int getPrice() {
+        return price;
+    }
+
+    public String getPromotion() {
+        return promotion;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
 }
-
-//name,price,quantity,promotion
-//콜라,1000,10,탄산2+1

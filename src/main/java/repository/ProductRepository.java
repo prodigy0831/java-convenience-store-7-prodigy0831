@@ -17,6 +17,7 @@ public class ProductRepository {
     private void loadProducts() {
         try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/products.md"))) {
             String line;
+            reader.readLine();
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
                 String name = data[0];
@@ -32,5 +33,7 @@ public class ProductRepository {
 
     }
 
-
+    public List<Product> getProducts(){
+        return products;
+    }
 }
