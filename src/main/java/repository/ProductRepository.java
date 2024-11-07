@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class ProductRepository {
     private List<Product> products = new ArrayList<>();
@@ -33,7 +35,13 @@ public class ProductRepository {
 
     }
 
-    public List<Product> getProducts(){
+    public List<Product> getProducts() {
         return products;
+    }
+
+    public List<Product> findProductByName(String productName) {
+        return products.stream()
+                .filter(product -> Objects.equals(product.getName(), productName))
+                .collect(Collectors.toList());
     }
 }
