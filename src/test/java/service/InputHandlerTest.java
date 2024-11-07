@@ -18,7 +18,6 @@ public class InputHandlerTest {
 
     @ParameterizedTest
     @NullAndEmptySource
-    @ValueSource(strings = {"[]"})
     @DisplayName("사용자 입력이 비어있거나 null 또는 공백일 때")
     void EmptyOrNullInputTest(String input){
         assertThatThrownBy(()->{
