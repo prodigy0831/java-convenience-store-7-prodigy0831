@@ -16,9 +16,8 @@ public class InputHandler {
     private static final Pattern INPUT_PATTERN = Pattern.compile(("\\[(.+)-([0-9]+)]"));
 
     public static Map<String, Integer> processInput(String items, ProductRepository productRepository) {
-        if (items == null || items.isBlank()) {
-            throw new IllegalArgumentException(INVALID_INPUT_FORMAT);
-        }
+        validateInputFormat(items);
+
         Map<String, Integer> productMap = createProductMap(items);
         for (String productName : productMap.keySet()) {
             List<Product> matchedProducts = productRepository.findProductByName(productName);
@@ -33,8 +32,13 @@ public class InputHandler {
                 throw new IllegalArgumentException(OUT_OF_STOCK);
             }
         }
-
         return productMap;
+    }
+
+    private static void validateInputFormat(String items) {
+        if (items == null || items.isBlank()) {
+            throw new IllegalArgumentException(INVALID_INPUT_FORMAT);
+        }
     }
 
     private static Map<String, Integer> createProductMap(String items) {
