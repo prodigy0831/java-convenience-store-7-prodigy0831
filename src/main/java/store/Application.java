@@ -1,11 +1,10 @@
 package store;
 
-import repository.ProductRepository;
-import view.OutputView;
+import contoroller.StoreController;
 
 public class Application {
     public static void main(String[] args) {
-        ProductRepository productRepository = new ProductRepository();
-        OutputView.printProducts(productRepository);
+        StoreController storeController = new StoreController();
+        storeController.run();
     }
 }
