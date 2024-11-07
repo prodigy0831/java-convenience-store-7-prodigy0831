@@ -12,8 +12,9 @@ public class StoreController {
 
         OutputView.printProducts(productRepository);
         String inputItem = InputView.readItem();
+        Map<String,Integer> requiredProductMap;
         try{
-            InputHandler.processInput(inputItem,productRepository);
+            requiredProductMap = InputHandler.processInput(inputItem,productRepository);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }

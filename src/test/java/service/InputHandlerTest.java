@@ -38,12 +38,21 @@ public class InputHandlerTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"[왕꿈틀이-1]"})
-    @DisplayName("사용자 입력이 잘못된 포맷일 때")
+    @ValueSource(strings = {"[왕꿈틀이-1]","[콜라-11],[물-1],[왕꿈틀이-1]"})
+    @DisplayName("존재하지 않는 상품이 입력으로 들어올 때")
     void NotFoundProductNameTest(String input) {
         assertThatThrownBy(() -> {
             InputHandler.processInput(input, productRepository);
         }).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.");
+    }
+    @ParameterizedTest
+    @ValueSource(strings = {"[콜라-21]","[콜라-10],[콜라-11]","[콜라-21],[물-1],[왕꿈틀이-1]"})
+    @DisplayName("현재 재고보다 많은 수량이 input으로 들어올 때")
+    void OutOfStockTest(String input) {
+        assertThatThrownBy(() -> {
+            InputHandler.processInput(input, productRepository);
+        }).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
     }
 }
