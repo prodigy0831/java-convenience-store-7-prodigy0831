@@ -2,28 +2,37 @@ package contoroller;
 
 import java.util.Map;
 import repository.ProductRepository;
+import repository.PromotionRepository;
 import service.InputHandler;
 import view.InputView;
 import view.OutputView;
 
 public class StoreController {
+    private final PromotionRepository promotionRepository;
+    private final ProductRepository productRepository;
+    private final InputHandler inputHandler;
+
+    public StoreController() {
+        this.promotionRepository = new PromotionRepository();
+        this.productRepository = new ProductRepository();
+        this.inputHandler = new InputHandler(productRepository);
+    }
+
     public void run() {
-        ProductRepository productRepository = new ProductRepository();
         OutputView.printProducts(productRepository);
 
-        Map<String, Integer> requiredProductMap = getValidProductMap(productRepository);
+        Map<String, Integer> requiredProductMap = getValidProductMap();
 
     }
 
-    private Map<String, Integer> getValidProductMap(ProductRepository productRepository) {
-        while(true){
+    private Map<String, Integer> getValidProductMap() {
+        while (true) {
             String inputItem = InputView.readItem();
-            try{
-                return InputHandler.processInput(inputItem, productRepository);
-            }catch(IllegalArgumentException e){
+            try {
+                return inputHandler.processInput(inputItem);
+            } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
         }
     }
-
 }

@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ProductRepository {
-    private List<Product> products = new ArrayList<>();
+    private final List<Product> products = new ArrayList<>();
 
     public ProductRepository() {
         loadProducts();
@@ -26,6 +26,7 @@ public class ProductRepository {
                 int price = Integer.parseInt(data[1]);
                 int quantity = Integer.parseInt(data[2]);
                 String promotion = data[3];
+
 
                 products.add(new Product(name, price, quantity, promotion));
             }
