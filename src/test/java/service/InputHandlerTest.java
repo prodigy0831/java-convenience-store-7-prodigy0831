@@ -23,6 +23,14 @@ public class InputHandlerTest {
         assertThatThrownBy(()->{
             InputHandler.processInput(input,productRepository);
         } ).isInstanceOf(IllegalArgumentException.class);
+    }
 
+    @ParameterizedTest
+    @ValueSource(strings = {"[]","[],[콜라-1]", "콜라,물", "오렌지주스1,갑자칩1"})
+    @DisplayName("사용자 입력이 잘못된 포맷일 때")
+    void InvalidFormatInputTest(String input){
+        assertThatThrownBy(()->{
+            InputHandler.processInput(input,productRepository);
+        } ).isInstanceOf(IllegalArgumentException.class);
     }
 }
