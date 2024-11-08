@@ -26,7 +26,7 @@ public class Product {
                 return promo.getPromotionType();
             }
         }
-        return null;
+        return PromotionType.NONE;
     }
 
     public String getName() {
@@ -47,5 +47,9 @@ public class Product {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public PromotionType getPromotionType(){
+        return promotionType;
     }
 }

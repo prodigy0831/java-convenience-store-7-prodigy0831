@@ -1,12 +1,14 @@
 package repository;
 
 import domain.Product;
+import domain.PromotionType;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ProductRepository {
@@ -72,6 +74,15 @@ public class ProductRepository {
         return products.stream()
                 .filter(product -> Objects.equals(product.getName(), productName))
                 .collect(Collectors.toList());
+    }
+    public Optional<Product> findProductByNameAndPromotionType(String productName, PromotionType promotionType) {
+        return products.stream()
+                .filter(product -> product.getName().equals(productName) && product.getPromotionType() == promotionType)
+                .findFirst();
+    }
+
+    public void decreaseQuantity(String productName,int quantity,boolean isPromo){
+
     }
 
 }
