@@ -21,7 +21,6 @@ public class PromotionRepository {
             String line;
             reader.readLine();
             while ((line = reader.readLine()) != null) {
-
                 if(line.trim().isEmpty()){
                     continue;
                 }

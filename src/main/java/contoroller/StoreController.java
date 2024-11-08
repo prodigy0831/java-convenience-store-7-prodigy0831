@@ -2,7 +2,6 @@ package contoroller;
 
 import java.util.Map;
 import repository.ProductRepository;
-import repository.PromotionRepository;
 import service.InputHandler;
 import view.InputView;
 import view.OutputView;
@@ -29,5 +28,8 @@ public class StoreController {
                 System.out.println(e.getMessage());
             }
         }
+    }
+    public ProductRepository getProductRepository(){
+        return productRepository;
     }
 }

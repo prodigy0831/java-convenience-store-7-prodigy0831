@@ -3,6 +3,7 @@ package store;
 import contoroller.OrderController;
 import contoroller.StoreController;
 import java.util.Map;
+import repository.ProductRepository;
 
 public class Application {
     public static void main(String[] args) {
@@ -11,7 +12,7 @@ public class Application {
 
         storeController.showStock();
         Map<String,Integer> requiredProductMap = storeController.getValidProductMap();
-
-        orderController.processOrder(requiredProductMap);
+        ProductRepository productRepository = storeController.getProductRepository();
+        orderController.processOrder(requiredProductMap,productRepository);
     }
 }

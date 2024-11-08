@@ -1,7 +1,6 @@
 package domain;
 
 import java.util.List;
-import repository.ProductRepository;
 import repository.PromotionRepository;
 
 public class Product {
