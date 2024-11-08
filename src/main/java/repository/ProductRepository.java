@@ -21,6 +21,10 @@ public class ProductRepository {
             String line;
             reader.readLine();
             while ((line = reader.readLine()) != null) {
+
+                if (line.trim().isEmpty()){
+                    continue;
+                }
                 String[] data = line.split(",");
                 String name = data[0];
                 int price = Integer.parseInt(data[1]);

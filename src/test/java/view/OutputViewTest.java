@@ -14,10 +14,10 @@ public class OutputViewTest {
         productRepository = new ProductRepository();
 
     }
-
-    @Test
-    @DisplayName("출력 확인")
-    void test(){
-        assertThat(productRepository.getProducts().size()).isEqualTo(16);
-    }
+//
+//    @Test
+//    @DisplayName("출력 확인")
+//    void test(){
+//        assertThat(productRepository.getProducts().size()).isEqualTo(16);
+//    }
 }

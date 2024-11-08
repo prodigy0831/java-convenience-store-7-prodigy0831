@@ -21,6 +21,10 @@ public class PromotionRepository {
             String line;
             reader.readLine();
             while ((line = reader.readLine()) != null) {
+
+                if(line.trim().isEmpty()){
+                    continue;
+                }
                 String[] data = line.split(",");
                 String name = data[0];
                 int buy = Integer.parseInt(data[1]);
