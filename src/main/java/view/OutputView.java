@@ -16,10 +16,11 @@ public class OutputView {
             }
 
             String formattedPrice = numberFormat.format(product.getPrice());
-            String formattedQuantity = numberFormat.format(product.getQuantity());
             if (product.getQuantity() == 0) {
-                formattedQuantity = "재고 없음";
+                System.out.printf("- %s %s원 재고 없음 %s%n", product.getName(), formattedPrice, promotion);
+                continue;
             }
+            String formattedQuantity = numberFormat.format(product.getQuantity());
             System.out.printf("- %s %s원 %s개 %s%n", product.getName(), formattedPrice, formattedQuantity,
                     promotion);
         }
