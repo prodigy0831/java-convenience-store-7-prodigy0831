@@ -41,23 +41,16 @@ public class InputHandler {
             String ProductName = entry.getKey();
             int requiredProductQuantity = entry.getValue();
 
-            List<Product> matchedProducts = productRepository.findProductByName(ProductName);
-            checkProductsExists(matchedProducts);
-            checkQuantity(matchedProducts, requiredProductQuantity);
+            Product matchedProduct = productRepository.findProductByName(ProductName);
+            checkQuantity(matchedProduct, requiredProductQuantity);
 
         }
     }
 
-    private void checkQuantity(List<Product> matchedProducts, int requiredProductQuantity) {
-        int totalStock = calculateTotalStock(matchedProducts);
+    private void checkQuantity(Product matchedProduct, int requiredProductQuantity) {
+        int totalStock = matchedProduct.getTotalQauntity();
         if (totalStock < requiredProductQuantity) {
             throw new IllegalArgumentException(OUT_OF_STOCK);
-        }
-    }
-
-    private void checkProductsExists(List<Product> matchedProducts) {
-        if (matchedProducts.isEmpty()) {
-            throw new IllegalArgumentException(PRODUCT_NOT_FOUND);
         }
     }
 
@@ -80,9 +73,4 @@ public class InputHandler {
         return matcher;
     }
 
-    private int calculateTotalStock(List<Product> matchedProducts) {
-        return matchedProducts.stream()
-                .mapToInt(Product::getQuantity)
-                .sum();
-    }
 }

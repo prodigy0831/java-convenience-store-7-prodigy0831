@@ -15,6 +15,6 @@ public class Application {
         Map<String, Integer> requiredProductMap = storeController.getValidProductMap();
         ProductRepository productRepository = storeController.getProductRepository();
 
-        orderController.processOrder(requiredProductMap, productRepository);
+        orderController.Order(requiredProductMap, productRepository);
     }
 }
