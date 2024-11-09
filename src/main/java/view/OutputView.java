@@ -2,9 +2,12 @@ package view;
 
 import domain.Product;
 import domain.PromotionType;
+import domain.Receipt;
 import java.text.NumberFormat;
-import java.util.Objects;
+import java.util.List;
+import java.util.Map;
 import repository.ProductRepository;
+import service.RequestedProduct;
 
 public class OutputView {
     public static void printProducts(ProductRepository productRepository) {
@@ -19,9 +22,9 @@ public class OutputView {
                 if (product.getPromotionQuantity() > 0) {
                     String formattedPromoQuantity = numberFormat.format(product.getPromotionQuantity());
                     System.out.printf("- %s %s원 %s개 %s%n", product.getName(), formattedPrice, formattedPromoQuantity,
-                            product.getPromotion());
+                            product.getPromotionName());
                 } else {
-                    System.out.printf("- %s %s원 재고 없음 %s%n", product.getName(), formattedPrice, product.getPromotion());
+                    System.out.printf("- %s %s원 재고 없음 %s%n", product.getName(), formattedPrice, product.getPromotionName());
                 }
             }
             if (product.getGeneralQuantity() > 0) {
@@ -37,6 +40,16 @@ public class OutputView {
 
     private static void greetingMessage() {
         System.out.printf("안녕하세요. W편의점입니다.%n현재 보유하고 있는 상품입니다.%n%n");
+    }
+
+    public static void printReceipt(List<RequestedProduct> purchasedItems){
+        NumberFormat currencyFormat = NumberFormat.getInstance();
+        System.out.println("=========== W 편의점 ===========");
+        System.out.println("상품명       수량     금액");
+        for(RequestedProduct item : purchasedItems){
+            System.out.printf("%-10s %4d개 %10s원%n",item.getProductName(),item.getQuantity(),currencyFormat.format(item.getPrice()));
+        }
+
     }
 }
 

@@ -1,8 +1,10 @@
 package contoroller;
 
+import java.util.List;
 import java.util.Map;
 import repository.ProductRepository;
 import service.InputHandler;
+import service.RequestedProduct;
 import view.InputView;
 import view.OutputView;
 
@@ -10,8 +12,8 @@ public class StoreController {
     private final ProductRepository productRepository;
     private final InputHandler inputHandler;
 
-    public StoreController() {
-        this.productRepository = new ProductRepository();
+    public StoreController(ProductRepository productRepository) {
+        this.productRepository = productRepository;
         this.inputHandler = new InputHandler(productRepository);
     }
 
@@ -20,7 +22,7 @@ public class StoreController {
         OutputView.printProducts(productRepository);
     }
 
-    public Map<String, Integer> getValidProductMap() {
+    public List<RequestedProduct> getValidRequestedProduct() {
         while (true) {
             String inputItem = InputView.readItem();
             try {

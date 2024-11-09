@@ -5,6 +5,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,8 +14,9 @@ import repository.ProductRepository;
 
 public class OutputViewTest {
     private static ProductRepository productRepository;
+
     @BeforeAll
-    static void setUp(){
+    static void setUp() {
         productRepository = new ProductRepository();
 
     }
@@ -21,20 +24,22 @@ public class OutputViewTest {
     @Test
     @DisplayName("출력 확인")
     void test() throws IOException {
-        int expectedLineCount = countNonEmptyLines("src/main/resources/products.md") - 1; // 헤더 제외
-        assertThat(productRepository.getProducts().size()).isEqualTo(expectedLineCount);
+        int expectedProductCount = countNonEmptyLines("src/main/resources/products.md");
+        assertThat(productRepository.getProducts().size()).isEqualTo(expectedProductCount);
     }
 
     private int countNonEmptyLines(String filePath) throws IOException {
+        Set<String> productNames = new HashSet<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            int lineCount = 0;
             String line;
+            reader.readLine();
             while ((line = reader.readLine()) != null) {
                 if (!line.trim().isEmpty()) { // 빈 줄 제외
-                    lineCount++;
+                    String productName = line.split(",")[0].trim();
+                    productNames.add(productName);
                 }
             }
-            return lineCount;
         }
+        return productNames.size();
     }
 }

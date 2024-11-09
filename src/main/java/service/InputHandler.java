@@ -1,6 +1,7 @@
 package service;
 
 import domain.Product;
+import java.util.ArrayList;
 import repository.ProductRepository;
 
 import java.util.LinkedHashMap;
@@ -21,13 +22,29 @@ public class InputHandler {
         this.productRepository = productRepository;
     }
 
-    public Map<String, Integer> processInput(String items) {
+    public List<RequestedProduct> processInput(String items) {
         validateInputFormat(items);
 
-        Map<String, Integer> parsedProductMap = parseProductMap(items);
-        validateProducts(parsedProductMap);
+        return parseRequestedProductList(items);
+    }
 
-        return parsedProductMap;
+    private List<RequestedProduct> parseRequestedProductList(String items) {
+        Map<String, Integer> productMap = new LinkedHashMap<>();//중복되는 item 주문을 한번에 처리
+        for (String item : items.split(",")) {
+            Matcher matcher = validateAndMatchInput(item);
+            String productName = matcher.group(1);
+            int productAmount = Integer.parseInt(matcher.group(2));
+
+            productMap.put(productName, productMap.getOrDefault(productName, 0) + productAmount);
+        }
+
+        List<RequestedProduct> requestedProductList = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : productMap.entrySet()) {
+            RequestedProduct requestedProduct = new RequestedProduct(entry.getKey(), entry.getValue(),
+                    productRepository);
+            requestedProductList.add(requestedProduct);
+        }
+        return requestedProductList;
     }
 
     private void validateInputFormat(String items) {
@@ -35,35 +52,7 @@ public class InputHandler {
             throw new IllegalArgumentException(INVALID_INPUT_FORMAT);
         }
     }
-    //product에서 validate하기
-    private void validateProducts(Map<String, Integer> parsedProductMap) {
-        for (Map.Entry<String, Integer> entry : parsedProductMap.entrySet()) {
-            String ProductName = entry.getKey();
-            int requiredProductQuantity = entry.getValue();
 
-            Product matchedProduct = productRepository.findProductByName(ProductName);
-            checkQuantity(matchedProduct, requiredProductQuantity);
-
-        }
-    }
-
-    private void checkQuantity(Product matchedProduct, int requiredProductQuantity) {
-        int totalStock = matchedProduct.getTotalQauntity();
-        if (totalStock < requiredProductQuantity) {
-            throw new IllegalArgumentException(OUT_OF_STOCK);
-        }
-    }
-
-    private Map<String, Integer> parseProductMap(String items) {
-        Map<String, Integer> productMap = new LinkedHashMap<>();
-        for (String item : items.split(",")) {
-            Matcher matcher = validateAndMatchInput(item);
-            String productName = matcher.group(1);
-            int productAmount = Integer.parseInt(matcher.group(2));
-            productMap.put(productName, productMap.getOrDefault(productName, 0) + productAmount);
-        }
-        return productMap;
-    }
 
     private Matcher validateAndMatchInput(String item) {
         Matcher matcher = INPUT_PATTERN.matcher(item);

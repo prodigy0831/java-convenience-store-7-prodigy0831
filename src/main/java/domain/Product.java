@@ -8,17 +8,17 @@ public class Product {
     private int price;
     private int promotionQuantity = 0;
     private int generalQuantity = 0;
-    private String promotion;
+    private String promotionName;
     private PromotionType promotionType;
 
     private static final List<Promotion> promotions = PromotionRepository.getPromotions();
 
     //만들어지는 시점에 validate를 체크한다
-    public Product(String name, int price, int quantity, String promotion, boolean isPromo) {
+    public Product(String name, int price, int quantity, String promotionName, boolean isPromo) {
         this.name = name;
         this.price = price;
-        this.promotion = promotion;
-        this.promotionType = parsePromotionType(promotion);
+        this.promotionName = promotionName;
+        this.promotionType = parsePromotionType(promotionName);
 
         if (isPromo) {
             this.promotionQuantity = quantity;
@@ -44,8 +44,8 @@ public class Product {
         return price;
     }
 
-    public String getPromotion() {
-        return promotion;
+    public String getPromotionName() {
+        return promotionName;
     }
     public int getPromotionQuantity(){
         return promotionQuantity;
@@ -53,7 +53,7 @@ public class Product {
     public int getGeneralQuantity(){
         return generalQuantity;
     }
-    public int getTotalQauntity(){
+    public int getTotalQuantity(){
         return promotionQuantity+generalQuantity;
     }
     public void addPromotionQuantity(int quantity){
@@ -79,5 +79,9 @@ public class Product {
 
     public PromotionType getPromotionType() {
         return promotionType;
+    }
+
+    public boolean hasPromo(){
+        return promotionType !=PromotionType.NONE;
     }
 }

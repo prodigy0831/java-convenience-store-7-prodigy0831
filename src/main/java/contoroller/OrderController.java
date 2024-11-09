@@ -1,21 +1,24 @@
 package contoroller;
 
-import domain.Product;
-import domain.Recipt;
+
+import domain.Receipt;
 import java.util.List;
-import java.util.Map;
 import repository.ProductRepository;
 import service.OrderService;
+import service.RequestedProduct;
 
 public class OrderController {
-    private OrderService orderService;
+    private final OrderService orderService;
 
-    public void Order(Map<String,Integer> requiredItems,ProductRepository productRepository){
+    public OrderController(ProductRepository productRepository) {
         this.orderService = new OrderService(productRepository);
-        Recipt receipt = new Recipt();
-
-        }
-
-
     }
+
+    public void Order(List<RequestedProduct> requestedProductList) {
+        Receipt receipt = orderService.order(requestedProductList);
+        receipt.print();
+    }
+
+
+}
 
