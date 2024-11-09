@@ -19,43 +19,38 @@ public class OrderService {
         Receipt receipt = new Receipt();
 
         for (RequestedProduct requestedProduct : requestedProductList) {
-            String requestedProductName = requestedProduct.getProductName();
-            int requestedProductQuantity = requestedProduct.getQuantity();
-            int requestedProductPrice = requestedProduct.getPrice();
+            String name = requestedProduct.getProductName();
+            int quantity = requestedProduct.getQuantity();
+            int price = requestedProduct.getPrice();
 
-            Product stockProduct = productRepository.findProductByName(requestedProductName);
-            int promotionProductQuantity = stockProduct.getPromotionQuantity();
+            Product stockProduct = productRepository.findProductByName(name);
+            int promotionStock = stockProduct.getPromotionQuantity();
 
-            PurchaseProduct purchaseProduct = new PurchaseProduct(requestedProductName, requestedProductQuantity,
-                    requestedProductPrice);
+            PurchaseProduct purchaseProduct = new PurchaseProduct(name, quantity, price);
             //프로모션중일때
             if (stockProduct.hasPromo()) {
                 PromotionType promotionType = stockProduct.getPromotionType();
                 int divisor = promotionType.getDivisor();
                 //1개 무료로 받을 수 있을 때
-                if (requestedProductQuantity % divisor == divisor - 1
-                        && promotionProductQuantity >= requestedProductQuantity + 1) {
-                    if (InputView.confirmFreeItemAddition(requestedProductName).equals("Y")) {
+                if (quantity % divisor == divisor - 1 && promotionStock >= quantity + 1) {
+                    if (InputView.confirmFreeItemAddition(name).equals("Y")) {
                         purchaseProduct.addGiveawayQuantity();
-                        requestedProductQuantity += 1;
+                        quantity += 1;
                     }
                 }
                 //프로모션 재고 충분하면
-                if (promotionProductQuantity >= requestedProductQuantity) {
-                    receipt.applyPromoItem(requestedProductName, requestedProductQuantity / divisor,
-                            requestedProductPrice);
-                    stockProduct.reducePromotionQuantity(requestedProductQuantity);
+                if (promotionStock >= quantity) {
+                    receipt.applyPromoItem(name, quantity / divisor, price);
                 } else {//프로모션 재고 없으면
-                    receipt.applyPromoItem(requestedProductName, requestedProductQuantity / divisor,
-                            requestedProductPrice);
-                    stockProduct.reducePromotionQuantity(requestedProductQuantity);
+                    receipt.applyPromoItem(name, promotionStock / divisor, price);
+                    stockProduct.reducePromotionQuantity((promotionStock / divisor) * divisor);
                     int restPromotionProductQuantity = stockProduct.getPromotionQuantity();
                     stockProduct.reducePromotionQuantity(restPromotionProductQuantity);
                     stockProduct.addGeneralQuantity(restPromotionProductQuantity);
 
-                    int insufficientQuantity = requestedProductQuantity - promotionProductQuantity;
+                    int insufficientQuantity = quantity - promotionStock;
                     //프로모션안하면 안살래요
-                    if (InputView.confirmPurchaseWithoutPromotion(requestedProductName, insufficientQuantity)
+                    if (InputView.confirmPurchaseWithoutPromotion(name, insufficientQuantity)
                             .equals("N")) {
                         purchaseProduct.subtractQuantity(insufficientQuantity);
                     }
