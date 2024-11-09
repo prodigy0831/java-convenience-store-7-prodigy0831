@@ -23,9 +23,9 @@ public class Receipt {
         this.finalAmount = 0;
         this.membershipDiscount = 0;
 
-        for (RequestedProduct requestedProduct:requestedProductList){
+        for (RequestedProduct requestedProduct : requestedProductList) {
             purchasedItems.add(requestedProduct);
-            totalAmount+=(requestedProduct.getPrice()*requestedProduct.getQuantity());
+            totalAmount += (requestedProduct.getPrice() * requestedProduct.getQuantity());
         }
     }
 
@@ -37,8 +37,11 @@ public class Receipt {
         promotionDiscount += price * quantity;
     }
 
-    public void print(){
+    public void print() {
         OutputView.printReceipt(purchasedItems);
-//        OutputView.printPromotionReceipt(promoItems,promotionDiscount);
+        if (!promoItems.isEmpty()) {
+            OutputView.printPromotionReceipt(promoItems);
+        }
+
     }
 }

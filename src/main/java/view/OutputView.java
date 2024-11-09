@@ -46,21 +46,21 @@ public class OutputView {
 
     public static void printReceipt(List<RequestedProduct> purchasedItems) {
         NumberFormat currencyFormat = NumberFormat.getInstance();
-        System.out.println("=========== W 편의점 ===========");
-        System.out.println("상품명       수량     금액");
+        System.out.println("===========W 편의점=============");
+        System.out.printf("%-13s %-7s %-6s%n", "상품명", "수량", "금액");
 
         for (RequestedProduct item : purchasedItems) {
             int quantity = item.getQuantity();
             int totalPrice = item.getPrice() * quantity;
 
-            System.out.printf("%-10s %3d개 %10s원%n", item.getProductName(), quantity, currencyFormat.format(totalPrice));
+            System.out.printf("%-13s %-7d %-6s%n", item.getProductName(), quantity, currencyFormat.format(totalPrice));
         }
     }
-    public static void printPromotionReceipt(Map<String,Integer>promoItems,int promotionDiscount){
-        System.out.println("===========증     정===========");
-        promoItems.forEach((productName,quantity)->
-                System.out.printf("%-10s %3d개%n",productName,quantity));
 
+    public static void printPromotionReceipt(Map<String, Integer> promoItems) {
+        System.out.println("===========증     정===========");
+        promoItems.forEach((productName, quantity) ->
+                System.out.printf("%-12s %4d%n", productName, quantity));
     }
 
 }

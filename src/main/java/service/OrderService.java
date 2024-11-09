@@ -23,7 +23,6 @@ public class OrderService {
             Product stockProduct = productRepository.findProductByName(requestedProductName);
             //프로모션중일때
             if (stockProduct.hasPromo()) {
-
                 //재고 충분하면
                 if (stockProduct.getPromotionQuantity() > requestedProductQuantity) {
                     receipt.addPromoItem(requestedProductName, requestedProductQuantity, stockProduct);
