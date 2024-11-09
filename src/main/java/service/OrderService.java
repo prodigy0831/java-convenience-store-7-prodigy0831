@@ -1,7 +1,6 @@
 package service;
 
 import domain.Product;
-import domain.PromotionType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,24 +25,24 @@ public class OrderService {
 
         for (Map.Entry<String, Integer> entry : requiredProducts.entrySet()) {
             String productName = entry.getKey();
-            int requiredquantity = entry.getValue();
-            List<Product> stockProducts = productRepository.findProductByName(productName);
+            int requiredQuantity = entry.getValue();
 
-            Product promoProduct = stockProducts.stream()
-                    .filter(product -> product.getPromotionType() != PromotionType.NONE)
-                    .findFirst()
-                    .orElse(null);
-            Product nonPromoProduct = stockProducts.stream()
-                    .filter(product -> product.getPromotionType() == PromotionType.NONE)
-                    .findFirst()
-                    .orElse(null);
-            if (promoProduct == null || promoProduct.getQuantity() == 0) {
+            if (productRepository.hasPromo(productName)) {
+                List<Product> stockProducts = productRepository.findProductByName(productName);
+                promoDiscounts.put(productName, applyPromotionWithBothStocks(productName, requiredQuantity));
                 continue;
             }
-
-
         }
         return promoDiscounts;
     }
+
+    private Integer applyPromotionWithBothStocks(String productName, int requiredQuantity) {
+        Product promoProduct = productRepository.findProductByNameWithPromo(productName);
+        Product nonPromoProduct = productRepository.findProductByNameWithoutPromo(productName);
+        int promoProductQuantity = promoProduct.getQuantity();
+        return promoProductQuantity;
+
+    }
+
 }
 

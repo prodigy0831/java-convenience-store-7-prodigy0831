@@ -35,13 +35,13 @@ public class InputHandler {
             throw new IllegalArgumentException(INVALID_INPUT_FORMAT);
         }
     }
-
+    //product에서 validate하기
     private void validateProducts(Map<String, Integer> parsedProductMap) {
         for (Map.Entry<String, Integer> entry : parsedProductMap.entrySet()) {
-            String productProductName = entry.getKey();
+            String ProductName = entry.getKey();
             int requiredProductQuantity = entry.getValue();
 
-            List<Product> matchedProducts = productRepository.findProductByName(productProductName);
+            List<Product> matchedProducts = productRepository.findProductByName(ProductName);
             checkProductsExists(matchedProducts);
             checkQuantity(matchedProducts, requiredProductQuantity);
 
@@ -65,7 +65,9 @@ public class InputHandler {
         Map<String, Integer> productMap = new LinkedHashMap<>();
         for (String item : items.split(",")) {
             Matcher matcher = validateAndMatchInput(item);
-            addProductToMap(productMap, matcher);
+            String productName = matcher.group(1);
+            int productAmount = Integer.parseInt(matcher.group(2));
+            productMap.put(productName, productMap.getOrDefault(productName, 0) + productAmount);
         }
         return productMap;
     }
@@ -77,13 +79,6 @@ public class InputHandler {
         }
         return matcher;
     }
-
-    private void addProductToMap(Map<String, Integer> productMap, Matcher matcher) {
-        String productName = matcher.group(1);
-        int productAmount = Integer.parseInt(matcher.group(2));
-        productMap.put(productName, productMap.getOrDefault(productName, 0) + productAmount);
-    }
-
 
     private int calculateTotalStock(List<Product> matchedProducts) {
         return matchedProducts.stream()

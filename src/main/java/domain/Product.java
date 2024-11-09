@@ -12,6 +12,8 @@ public class Product {
 
     private static final List<Promotion> promotions = PromotionRepository.getPromotions();
 
+
+    //만들어지는 시점에 validate를 체크한다
     public Product(String name, int price, int quantity, String promotion) {
         this.name = name;
         this.price = price;
@@ -21,8 +23,8 @@ public class Product {
     }
 
     private PromotionType parsePromotionType(String promotion) {
-        for(Promotion promo : promotions){
-            if (promo.getName().equals(promotion)){
+        for (Promotion promo : promotions) {
+            if (promo.getName().equals(promotion)) {
                 return promo.getPromotionType();
             }
         }
@@ -49,7 +51,7 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public PromotionType getPromotionType(){
+    public PromotionType getPromotionType() {
         return promotionType;
     }
 }

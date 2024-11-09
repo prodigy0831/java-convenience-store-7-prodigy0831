@@ -66,23 +66,39 @@ public class ProductRepository {
         }
         return null;
     }
-
     public List<Product> getProducts() {
         return products;
     }
+
+
     public List<Product> findProductByName(String productName) {
         return products.stream()
                 .filter(product -> Objects.equals(product.getName(), productName))
                 .collect(Collectors.toList());
     }
-    public Optional<Product> findProductByNameAndPromotionType(String productName, PromotionType promotionType) {
+
+    public Product findProductByNameWithPromo(String productName) {
         return products.stream()
-                .filter(product -> product.getName().equals(productName) && product.getPromotionType() == promotionType)
-                .findFirst();
+                .filter(product -> product.getName().equals(productName)
+                        && product.getPromotionType() != PromotionType.NONE)
+                .findFirst()
+                .orElseThrow(
+                        () -> new IllegalArgumentException("[ERROR] 해당 상품에 프로모션이 적용된 제품을 찾을 수 없습니다: " + productName));
     }
 
-    public void decreaseQuantity(String productName,int quantity,boolean isPromo){
+    public Product findProductByNameWithoutPromo(String productName) {
+        return products.stream()
+                .filter(product -> product.getName().equals(productName)
+                        && product.getPromotionType() == PromotionType.NONE)
+                .findFirst()
+                .orElseThrow(
+                        () -> new IllegalArgumentException("[ERROR] 해당 상품에 프로모션이 적용된 제품을 찾을 수 없습니다: " + productName));
+    }
 
+    public boolean hasPromo(String productName) {
+        return products.stream()
+                .filter(product -> product.getName().equals(productName))
+                .count() == 2;
     }
 
 }

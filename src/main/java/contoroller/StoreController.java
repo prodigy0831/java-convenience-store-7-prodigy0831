@@ -16,6 +16,7 @@ public class StoreController {
     }
 
     public void showStock() {
+        //outputview에는 repository를 넘기면 안된다. products의 배열을 넘겨야 한다.
         OutputView.printProducts(productRepository);
     }
 
