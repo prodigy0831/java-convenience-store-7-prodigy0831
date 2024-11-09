@@ -2,6 +2,7 @@ package view;
 
 import domain.Product;
 import domain.PromotionType;
+import domain.PurchaseProduct;
 import domain.Receipt;
 import java.text.NumberFormat;
 import java.util.List;
@@ -44,23 +45,26 @@ public class OutputView {
     }
 
 
-    public static void printReceipt(List<RequestedProduct> purchasedItems) {
+    public static void printReceipt(List<PurchaseProduct> purchasedItems) {
         NumberFormat currencyFormat = NumberFormat.getInstance();
         System.out.println("===========W 편의점=============");
         System.out.printf("%-13s %-7s %-6s%n", "상품명", "수량", "금액");
 
-        for (RequestedProduct item : purchasedItems) {
+        for (PurchaseProduct item : purchasedItems) {
             int quantity = item.getQuantity();
             int totalPrice = item.getPrice() * quantity;
 
-            System.out.printf("%-13s %-7d %-6s%n", item.getProductName(), quantity, currencyFormat.format(totalPrice));
+            System.out.printf("%-13s %-7d %-6s%n", item.getName(), quantity, currencyFormat.format(totalPrice));
         }
     }
 
-    public static void printPromotionReceipt(Map<String, Integer> promoItems) {
+    public static void printPromotionReceipt(List<PurchaseProduct> promoItems) {
         System.out.println("===========증     정===========");
-        promoItems.forEach((productName, quantity) ->
-                System.out.printf("%-12s %4d%n", productName, quantity));
+        for (PurchaseProduct item : promoItems) {
+            int quantity = item.getQuantity();
+
+            System.out.printf("%-13s %-6s%n", item.getName(), quantity);
+        }
     }
 
 }

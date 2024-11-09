@@ -8,33 +8,32 @@ import service.RequestedProduct;
 import view.OutputView;
 
 public class Receipt {
-    private final List<RequestedProduct> purchasedItems;
-    private final Map<String, Integer> promoItems;
+    private final List<PurchaseProduct> purchasedItems;
+    private final List<PurchaseProduct> promoItems;
     private int totalAmount;
     private int promotionDiscount;
     private int membershipDiscount;
     private int finalAmount;
 
-    public Receipt(List<RequestedProduct> requestedProductList) {
+    public Receipt() {
         this.purchasedItems = new ArrayList<>();
-        this.promoItems = new LinkedHashMap<>();
+        this.promoItems = new ArrayList<>();
         this.totalAmount = 0;
         this.promotionDiscount = 0;
         this.finalAmount = 0;
         this.membershipDiscount = 0;
 
-        for (RequestedProduct requestedProduct : requestedProductList) {
-            purchasedItems.add(requestedProduct);
-            totalAmount += (requestedProduct.getPrice() * requestedProduct.getQuantity());
+    }
+    public void applyPromoItem(String productName, int quantity, int price) {
+        if(quantity>0){
+            PurchaseProduct purchaseProduct = new PurchaseProduct(productName, quantity, price);
+            promoItems.add(purchaseProduct);
+            promotionDiscount += price * quantity;
         }
     }
-
-    public void addPromoItem(String productName, int quantity, Product stockProduct) {
-        PromotionType promotionType = stockProduct.getPromotionType();
-        int price = stockProduct.getPrice();
-        int discountQuantity = promotionType.calculateDiscountQuantity(quantity);
-        promoItems.put(productName, discountQuantity);
-        promotionDiscount += price * quantity;
+    public void applyGeneralItem(PurchaseProduct purchaseProduct){
+        purchasedItems.add(purchaseProduct);
+        totalAmount+=purchaseProduct.getPrice()*purchaseProduct.getQuantity();
     }
 
     public void print() {
