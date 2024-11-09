@@ -29,12 +29,16 @@ public class Receipt {
         }
     }
 
-    public void addPromoItem(String productName, int quantity, int price) {
-        promoItems.put(productName, quantity);
+    public void addPromoItem(String productName, int quantity, Product stockProduct) {
+        PromotionType promotionType = stockProduct.getPromotionType();
+        int price = stockProduct.getPrice();
+        int discountQuantity = promotionType.calculateDiscountQuantity(quantity);
+        promoItems.put(productName, discountQuantity);
         promotionDiscount += price * quantity;
     }
 
     public void print(){
         OutputView.printReceipt(purchasedItems);
+//        OutputView.printPromotionReceipt(promoItems,promotionDiscount);
     }
 }

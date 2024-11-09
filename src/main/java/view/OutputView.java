@@ -43,34 +43,25 @@ public class OutputView {
         System.out.printf("안녕하세요. W편의점입니다.%n현재 보유하고 있는 상품입니다.%n%n");
     }
 
-//    public static void printReceipt(List<RequestedProduct> purchasedItems) {
-//        NumberFormat currencyFormat = NumberFormat.getInstance();
-//        System.out.println("=========== W 편의점 ===========");
-//        System.out.println("상품명       수량     금액");
-//        for (RequestedProduct item : purchasedItems) {
-//            int quantity = item.getQuantity();
-//            int totalPrice = item.getPrice() * quantity;
-//            System.out.printf("%-10s %4d개 %10s원%n", item.getProductName(), quantity, currencyFormat.format(totalPrice));
-//        }
-//
-//    }
-public static void printReceipt(List<RequestedProduct> purchasedItems) {
-    NumberFormat currencyFormat = NumberFormat.getInstance();
-    System.out.println("=========== W 편의점 ===========");
-    System.out.println("상품명       수량     금액");
 
-    for (RequestedProduct item : purchasedItems) {
-        int quantity = item.getQuantity();
-        int totalPrice = item.getPrice() * quantity;
+    public static void printReceipt(List<RequestedProduct> purchasedItems) {
+        NumberFormat currencyFormat = NumberFormat.getInstance();
+        System.out.println("=========== W 편의점 ===========");
+        System.out.println("상품명       수량     금액");
 
-        // 포맷을 맞추기 위해 너비 조정
-        System.out.printf("%-10s %3d개 %10s원%n", item.getProductName(), quantity, currencyFormat.format(totalPrice));
+        for (RequestedProduct item : purchasedItems) {
+            int quantity = item.getQuantity();
+            int totalPrice = item.getPrice() * quantity;
+
+            System.out.printf("%-10s %3d개 %10s원%n", item.getProductName(), quantity, currencyFormat.format(totalPrice));
+        }
+    }
+    public static void printPromotionReceipt(Map<String,Integer>promoItems,int promotionDiscount){
+        System.out.println("===========증     정===========");
+        promoItems.forEach((productName,quantity)->
+                System.out.printf("%-10s %3d개%n",productName,quantity));
+
     }
 
-    System.out.println("===============================");
-    int totalAmount = purchasedItems.stream().mapToInt(item -> item.getPrice() * item.getQuantity()).sum();
-    System.out.printf("총 구매 금액: %s원%n", currencyFormat.format(totalAmount));
-    System.out.println("===============================");
-}
 }
 

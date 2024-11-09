@@ -1,6 +1,7 @@
 package service;
 
 import domain.Product;
+import domain.PromotionType;
 import domain.Receipt;
 import java.util.List;
 import repository.ProductRepository;
@@ -20,11 +21,14 @@ public class OrderService {
             int requestedProductQuantity = requestedProduct.getQuantity();
 
             Product stockProduct = productRepository.findProductByName(requestedProductName);
-//            if(stockProduct.hasPromo()){
-//                if(stockProduct.getPromotionQuantity()>requestedProductQuantity){
-//                    receipt.
-//                }
-//            }
+            //프로모션중일때
+            if (stockProduct.hasPromo()) {
+
+                //재고 충분하면
+                if (stockProduct.getPromotionQuantity() > requestedProductQuantity) {
+                    receipt.addPromoItem(requestedProductName, requestedProductQuantity, stockProduct);
+                }
+            }
 
         }
         return receipt;

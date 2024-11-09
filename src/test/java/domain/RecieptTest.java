@@ -28,23 +28,21 @@ public class RecieptTest extends NsTest {
         // Receipt 객체 초기화
         receipt = new Receipt(requestedProductList);
     }
+
     @Test
     void 영수증_출력_테스트() {
         assertSimpleTest(() -> {
             List<RequestedProduct> requestedProductList = new ArrayList<>();
-            requestedProductList.add(new RequestedProduct("콜라", 3, productRepository));
-            requestedProductList.add(new RequestedProduct("에너지바", 5, productRepository));
+            requestedProductList.add(new RequestedProduct("물", 3, productRepository));
+            requestedProductList.add(new RequestedProduct("정식도시락", 2, productRepository));
 
             Receipt receipt = new Receipt(requestedProductList);
             receipt.print();
 
             String expectedOutput = "=========== W 편의점 ===========\n" +
                     "상품명       수량     금액\n" +
-                    "콜라        3개      3,000원\n" +
-                    "에너지바     5개     10,000원\n" +
-                    "===============================\n" +
-                    "총 구매 금액: 13,000원\n" +
-                    "===============================\n";
+                    "물        3개      1,500원\n" +
+                    "정식도시락     2개     12,800원\n";
 
             assertThat(output().replaceAll("\\s", "")).isEqualTo(expectedOutput.replaceAll("\\s", ""));
         });
