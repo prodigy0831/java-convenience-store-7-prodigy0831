@@ -5,19 +5,23 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.Clock;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import repository.ProductRepository;
+import repository.PromotionRepository;
 
 public class OutputViewTest {
     private static ProductRepository productRepository;
+    private static PromotionRepository promotionRepository;
 
     @BeforeAll
     static void setUp() {
-        productRepository = new ProductRepository();
+        promotionRepository = new PromotionRepository();
+        productRepository = new ProductRepository(promotionRepository);
 
     }
 

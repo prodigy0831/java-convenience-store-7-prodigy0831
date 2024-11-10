@@ -3,14 +3,23 @@ package store;
 import contoroller.OrderController;
 import contoroller.StoreController;
 import domain.Membership;
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import repository.ProductRepository;
+import repository.PromotionRepository;
 import service.RequestedProduct;
 import view.InputView;
 
 public class Application {
     public static void main(String[] args) {
-        ProductRepository productRepository = new ProductRepository();
+        System.out.println(LocalDateTime.now());
+//        Clock clock = Clock.systemDefaultZone();
+//        Clock clock = Clock.fixed(LocalDate.of(2024, 2, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        PromotionRepository promotionRepository = new PromotionRepository();
+        ProductRepository productRepository = new ProductRepository(promotionRepository);
         StoreController storeController = new StoreController(productRepository);
         OrderController orderController = new OrderController(productRepository);
 

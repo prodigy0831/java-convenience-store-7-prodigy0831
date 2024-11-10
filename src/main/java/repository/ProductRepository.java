@@ -1,6 +1,8 @@
 package repository;
 
 import domain.Product;
+import domain.Promotion;
+import domain.PromotionType;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,12 +14,15 @@ import java.util.Optional;
 
 public class ProductRepository {
     private final List<Product> products = new ArrayList<>();
+    private final PromotionRepository promotionRepository;
 
-    public ProductRepository() {
+    public ProductRepository(PromotionRepository promotionRepository) {
+        this.promotionRepository = promotionRepository;
         loadProducts();
     }
 
     private void loadProducts() {
+        List<Promotion> promotions = promotionRepository.getPromotions();
         try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/products.md"))) {
             reader.readLine(); // 헤더 한 줄 건너뛰기
             String line;
@@ -27,21 +32,24 @@ public class ProductRepository {
                 int price = Integer.parseInt(parts[1].trim());
                 int quantity = Integer.parseInt(parts[2].trim());
                 String promotion = parts[3].trim();
-                boolean isPromo = !promotion.equals("null");
+
+                PromotionType promotionType = promotionRepository.getPromotionTypeByName(promotion)
+                        .orElse(PromotionType.NONE);
+                boolean isPromo = (promotionType != PromotionType.NONE);
 
                 Optional<Product> existingProduct = products.stream()
-                        .filter(p->Objects.equals(p.getName(),name))
+                        .filter(p -> Objects.equals(p.getName(), name))
                         .findFirst();
 
-                if(existingProduct.isPresent()){
+                if (existingProduct.isPresent()) {
                     Product product = existingProduct.get();
-                    if(isPromo){
+                    if (isPromo) {
                         product.addPromotionQuantity(quantity);
-                    }else{
+                    } else {
                         product.addGeneralQuantity(quantity);
                     }
-                }else{
-                    Product newProduct = new Product(name,price,quantity,promotion,isPromo);
+                } else {
+                    Product newProduct = new Product(name, price, quantity, promotion, promotionType, isPromo);
                     products.add(newProduct);
                 }
             }
@@ -61,7 +69,6 @@ public class ProductRepository {
                 .findFirst()
                 .orElse(null);
     }
-
 
 
 }

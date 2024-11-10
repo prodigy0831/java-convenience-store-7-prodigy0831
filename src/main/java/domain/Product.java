@@ -11,29 +11,21 @@ public class Product {
     private String promotionName;
     private PromotionType promotionType;
 
-    private static final List<Promotion> promotions = PromotionRepository.getPromotions();
-
     //만들어지는 시점에 validate를 체크한다
-    public Product(String name, int price, int quantity, String promotionName, boolean isPromo) {
+    public Product(String name, int price, int quantity, String promotionName, PromotionType promotionType,boolean isPromo) {
+        if(name.equals("감자칩")){
+            System.out.println("감자칩은"+isPromo);
+        }
         this.name = name;
         this.price = price;
         this.promotionName = promotionName;
-        this.promotionType = parsePromotionType(promotionName);
+        this.promotionType = promotionType;
 
         if (isPromo) {
             this.promotionQuantity = quantity;
         } else {
             this.generalQuantity = quantity;
         }
-    }
-
-    private PromotionType parsePromotionType(String promotion) {
-        for (Promotion promo : promotions) {
-            if (promo.getName().equals(promotion)) {
-                return promo.getPromotionType();
-            }
-        }
-        return PromotionType.NONE;
     }
 
     public String getName() {

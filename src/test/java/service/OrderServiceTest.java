@@ -5,6 +5,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import camp.nextstep.edu.missionutils.test.NsTest;
 import domain.Receipt;
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,15 +13,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import repository.ProductRepository;
+import repository.PromotionRepository;
 
 
 public class OrderServiceTest extends NsTest {
+
     private ProductRepository productRepository;
     private OrderService orderService;
 
     @BeforeEach
     void setUp() {
-        productRepository = new ProductRepository();
+        PromotionRepository promotionRepository = new PromotionRepository();
+        productRepository = new ProductRepository(promotionRepository);
         orderService = new OrderService(productRepository);
 
     }

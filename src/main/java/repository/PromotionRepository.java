@@ -1,26 +1,32 @@
 package repository;
 
 import domain.Promotion;
+import domain.PromotionType;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class PromotionRepository {
-    private static final List<Promotion> promotions =new ArrayList<>();
+    private final List<Promotion> promotions = new ArrayList<>();
 
-    static {
+
+    public PromotionRepository() {
+
         loadPromotions();
     }
 
-    private static void loadPromotions() {
+    private void loadPromotions() {
         try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/promotions.md"))) {
             String line;
             reader.readLine();
             while ((line = reader.readLine()) != null) {
-                if(line.trim().isEmpty()){
+                if (line.trim().isEmpty()) {
                     continue;
                 }
                 String[] data = line.split(",");
@@ -30,13 +36,26 @@ public class PromotionRepository {
                 LocalDate startDate = LocalDate.parse(data[3]);
                 LocalDate endDate = LocalDate.parse(data[4]);
 
-                promotions.add(new Promotion(name,buy,get,startDate,endDate));
+                LocalDate currentDate = LocalDate.now();
+                if (!currentDate.isBefore(startDate) && !currentDate.isAfter(endDate)) {
+                    System.out.println(name+","+startDate+","+endDate+","+currentDate);
+                    promotions.add(new Promotion(name, buy, get, startDate, endDate));
+                }
+
             }
         } catch (IOException e) {
             System.out.println("[ERROR] 파일 로딩 중 오류 발생");
         }
     }
-    public static List<Promotion> getPromotions() {
-        return promotions;
+
+    public List<Promotion> getPromotions() {
+        return Collections.unmodifiableList(promotions);
+    }
+
+    public Optional<PromotionType> getPromotionTypeByName(String promotionName){
+        return promotions.stream()
+                .filter(promotion->promotion.getName().equals(promotionName))
+                .map(Promotion::getPromotionType)
+                .findFirst();
     }
 }

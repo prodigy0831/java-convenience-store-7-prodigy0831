@@ -2,19 +2,22 @@ package service;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.time.Clock;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import repository.ProductRepository;
+import repository.PromotionRepository;
 
 public class InputHandlerTest {
     private static InputHandler inputHandler;
 
     @BeforeAll
     static void setUp() {
-        ProductRepository productRepository = new ProductRepository();
+        PromotionRepository promotionRepository = new PromotionRepository();
+        ProductRepository productRepository = new ProductRepository(promotionRepository);
         inputHandler = new InputHandler(productRepository);
     }
 
