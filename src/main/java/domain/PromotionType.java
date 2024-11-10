@@ -19,7 +19,7 @@ public enum PromotionType {
         if (this == BUY_TWO_GET_ONE) {
             return 3;
         }
-        return 0;
+        return 1;
     }
 
 }

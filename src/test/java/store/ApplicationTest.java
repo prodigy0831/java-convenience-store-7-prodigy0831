@@ -16,24 +16,24 @@ class ApplicationTest extends NsTest {
         assertSimpleTest(() -> {
             run("[물-1]", "N", "N");
             assertThat(output()).contains(
-                "- 콜라 1,000원 10개 탄산2+1",
-                "- 콜라 1,000원 10개",
-                "- 사이다 1,000원 8개 탄산2+1",
-                "- 사이다 1,000원 7개",
-                "- 오렌지주스 1,800원 9개 MD추천상품",
-                "- 오렌지주스 1,800원 재고 없음",
-                "- 탄산수 1,200원 5개 탄산2+1",
-                "- 탄산수 1,200원 재고 없음",
-                "- 물 500원 10개",
-                "- 비타민워터 1,500원 6개",
-                "- 감자칩 1,500원 5개 반짝할인",
-                "- 감자칩 1,500원 5개",
-                "- 초코바 1,200원 5개 MD추천상품",
-                "- 초코바 1,200원 5개",
-                "- 에너지바 2,000원 5개",
-                "- 정식도시락 6,400원 8개",
-                "- 컵라면 1,700원 1개 MD추천상품",
-                "- 컵라면 1,700원 10개"
+                    "- 콜라 1,000원 10개 탄산2+1",
+                    "- 콜라 1,000원 10개",
+                    "- 사이다 1,000원 8개 탄산2+1",
+                    "- 사이다 1,000원 7개",
+                    "- 오렌지주스 1,800원 9개 MD추천상품",
+                    "- 오렌지주스 1,800원 재고 없음",
+                    "- 탄산수 1,200원 5개 탄산2+1",
+                    "- 탄산수 1,200원 재고 없음",
+                    "- 물 500원 10개",
+                    "- 비타민워터 1,500원 6개",
+                    "- 감자칩 1,500원 5개 반짝할인",
+                    "- 감자칩 1,500원 5개",
+                    "- 초코바 1,200원 5개 MD추천상품",
+                    "- 초코바 1,200원 5개",
+                    "- 에너지바 2,000원 5개",
+                    "- 정식도시락 6,400원 8개",
+                    "- 컵라면 1,700원 1개 MD추천상품",
+                    "- 컵라면 1,700원 10개"
             );
         });
     }
@@ -66,18 +66,20 @@ class ApplicationTest extends NsTest {
     @DisplayName("1+1 프로모션 재고 부족시")
     void insufficientStockTest1() {
         assertSimpleTest(() -> {
-            run("[감자칩-6]", "Y", "N");
-            assertThat(output().replaceAll("\\s", "")).contains("감자칩6");
+            run("[감자칩-6]", "Y", "N", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("감자칩2");
         });
     }
+
     @Test
     @DisplayName("2+1프로모션 재고 부족시")
     void insufficientStockTest2() {
         assertSimpleTest(() -> {
-            run("[사이다-9]", "Y", "N");
-            assertThat(output().replaceAll("\\s", "")).contains("감자칩6");
+            run("[사이다-9]", "N", "N", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("사이다6");
         });
     }
+
     @Override
     public void runMain() {
         Application.main(new String[]{});

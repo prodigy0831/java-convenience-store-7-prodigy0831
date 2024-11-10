@@ -1,6 +1,5 @@
 package repository;
 
-import domain.Product;
 import domain.Promotion;
 import java.io.BufferedReader;
 import java.io.FileReader;

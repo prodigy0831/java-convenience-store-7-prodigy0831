@@ -23,6 +23,11 @@ public class Promotion {
     }
 
     public PromotionType getPromotionType() {
+        LocalDate currentDate = LocalDate.now();
+
+        if(currentDate.isBefore(startDate)||currentDate.isAfter(endDate)){
+            return PromotionType.NONE;
+        }
         if (buy == 1 && get == 1) {
             return PromotionType.BUY_ONE_GET_ONE;
         }
