@@ -67,5 +67,14 @@ public class OutputView {
         }
     }
 
+    public static void printReceiptSummary(int totalAmount,int totalQuantity,int promotionDiscount,int membershipDiscount){
+        System.out.println("=============================");
+        System.out.printf("%-13s %-7d %-6d%n", "총구매액", totalQuantity, totalAmount);
+        System.out.printf("%-13s %-6s%n", "행사할인", promotionDiscount);
+        System.out.printf("%-13s %-6s%n", "멤버십할인", membershipDiscount);
+        System.out.printf("%-13s %-6s%n", "내실돈", totalAmount-promotionDiscount-membershipDiscount);
+
+    }
+
 }
 

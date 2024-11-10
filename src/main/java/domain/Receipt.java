@@ -14,6 +14,8 @@ public class Receipt {
     private int promotionDiscount;
     private int membershipDiscount;
     private int finalAmount;
+    private int totalGeneralAmount;
+    private int totalQuantity;
 
     public Receipt() {
         this.purchasedItems = new ArrayList<>();
@@ -22,18 +24,28 @@ public class Receipt {
         this.promotionDiscount = 0;
         this.finalAmount = 0;
         this.membershipDiscount = 0;
+        this.totalGeneralAmount = 0;
+        this.totalQuantity = 0;
 
     }
-    public void applyPromoItem(String productName, int quantity, int price) {
-        if(quantity>0){
-            PurchaseProduct purchaseProduct = new PurchaseProduct(productName, quantity, price);
-            promoItems.add(purchaseProduct);
-            promotionDiscount += price * quantity;
-        }
+
+    public void applyPromoItem(PurchaseProduct promoProduct,int divisor) {
+        promoItems.add(promoProduct);
+        promotionDiscount+=promoProduct.getPrice()*promoProduct.getQuantity();
+        totalGeneralAmount-=promotionDiscount*divisor;
     }
-    public void applyGeneralItem(PurchaseProduct purchaseProduct){
+
+    public void applyGeneralItem(PurchaseProduct purchaseProduct) {
         purchasedItems.add(purchaseProduct);
-        totalAmount+=purchaseProduct.getPrice()*purchaseProduct.getQuantity();
+        int purchaseAmount = purchaseProduct.getPrice() * purchaseProduct.getQuantity();
+        totalAmount += purchaseAmount;
+        totalGeneralAmount+=purchaseAmount;
+        totalQuantity+=purchaseProduct.getQuantity();
+    }
+
+
+    public void useMembership(){
+        membershipDiscount = Membership.useMembership(totalGeneralAmount);
     }
 
     public void print() {
@@ -41,6 +53,7 @@ public class Receipt {
         if (!promoItems.isEmpty()) {
             OutputView.printPromotionReceipt(promoItems);
         }
+        OutputView.printReceiptSummary(totalAmount,totalQuantity,promotionDiscount,membershipDiscount);
 
     }
 }

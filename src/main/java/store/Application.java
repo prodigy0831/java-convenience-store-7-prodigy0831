@@ -2,6 +2,7 @@ package store;
 
 import contoroller.OrderController;
 import contoroller.StoreController;
+import domain.Membership;
 import java.util.List;
 import java.util.Map;
 import repository.ProductRepository;
