@@ -41,6 +41,7 @@ public class OutputView {
     }
 
     private static void greetingMessage() {
+        System.out.print(System.lineSeparator());
         System.out.printf("안녕하세요. W편의점입니다.%n현재 보유하고 있는 상품입니다.%n%n");
     }
 
