@@ -14,5 +14,4 @@ public enum PromotionType {
         }
         return 1;
     }
-
 }

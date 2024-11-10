@@ -15,16 +15,16 @@ public class OrderService {
         this.productRepository = productRepository;
     }
 
-    public Receipt order(List<RequestedProduct> requestedProductList) {
+    public Receipt order(List<RequestedProduct> requestedProducts) {
         Receipt receipt = new Receipt();
 
-        for (RequestedProduct requestedProduct : requestedProductList) {
+        for (RequestedProduct requestedProduct : requestedProducts) {
             String name = requestedProduct.getProductName();
             int quantity = requestedProduct.getQuantity();
             int price = requestedProduct.getPrice();
 
             Product stockProduct = productRepository.findProductByName(name);
-            int promotionStock = stockProduct.getPromotionQuantity();
+            int promotionQuantity = stockProduct.getPromotionQuantity();
 
             PurchaseProduct totalProduct = new PurchaseProduct(name, quantity, price);
             PurchaseProduct promoProduct = null;
@@ -32,24 +32,24 @@ public class OrderService {
             if (stockProduct.hasPromo()) {
                 PromotionType promotionType = stockProduct.getPromotionType();
                 int divisor = promotionType.getDivisor();
-                //1개 무료로 받을 수 있을 때
-                if (quantity % divisor == divisor - 1 && promotionStock >= quantity + 1) {
+                //1개 무료로 받을 수 있을 때>메서드로 빼기
+                if (quantity % divisor == divisor - 1 && promotionQuantity >= quantity + 1) {
                     if (InputView.confirmFreeItemAddition(name).equals("Y")) {
                         totalProduct.addGiveawayQuantity();
                         quantity += 1;
                     }
                 }
                 //프로모션 재고 충분하면
-                if (promotionStock >= quantity) {
+                if (promotionQuantity >= quantity) {
                     promoProduct = new PurchaseProduct(name, quantity / divisor, price);
                     stockProduct.reducePromotionQuantity(quantity);
                 } else {//프로모션 재고 부족하면
-                    int usedTotalPromoProduct = (promotionStock / divisor) * divisor;
+                    int usedTotalPromoProduct = (promotionQuantity / divisor) * divisor;
                     stockProduct.reducePromotionQuantity(usedTotalPromoProduct);
                     if (usedTotalPromoProduct != 0) {
-                        promoProduct = new PurchaseProduct(name, (promotionStock / divisor), price);
+                        promoProduct = new PurchaseProduct(name, (promotionQuantity / divisor), price);
                     }
-                    int restPromoQuantity = promotionStock - usedTotalPromoProduct;
+                    int restPromoQuantity = promotionQuantity - usedTotalPromoProduct;
                     stockProduct.reducePromotionQuantity(restPromoQuantity);
                     stockProduct.addGeneralQuantity(restPromoQuantity);
 
@@ -58,7 +58,7 @@ public class OrderService {
                     if (InputView.confirmPurchaseWithoutPromotion(name, insufficientQuantity)
                             .equals("N")) {
                         totalProduct.subtractQuantity(insufficientQuantity);
-                    }else{
+                    } else {
                         stockProduct.reduceGeneralQuantity(insufficientQuantity);
                     }
                 }
@@ -70,7 +70,6 @@ public class OrderService {
                 receipt.applyGeneralItem(totalProduct);
                 stockProduct.reduceGeneralQuantity(quantity);
             }
-
         }
         if (InputView.confirmUseMembership().equals("Y")) {
             receipt.useMembership();

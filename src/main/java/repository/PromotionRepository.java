@@ -1,5 +1,6 @@
 package repository;
 
+import camp.nextstep.edu.missionutils.DateTimes;
 import domain.Promotion;
 import domain.PromotionType;
 import java.io.BufferedReader;
@@ -7,6 +8,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.Clock;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,11 +18,10 @@ import java.util.Optional;
 public class PromotionRepository {
     private final List<Promotion> promotions = new ArrayList<>();
 
-
     public PromotionRepository() {
-
         loadPromotions();
     }
+
 
     private void loadPromotions() {
         try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/promotions.md"))) {
@@ -33,12 +35,13 @@ public class PromotionRepository {
                 String name = data[0];
                 int buy = Integer.parseInt(data[1]);
                 int get = Integer.parseInt(data[2]);
+//
                 LocalDate startDate = LocalDate.parse(data[3]);
                 LocalDate endDate = LocalDate.parse(data[4]);
 
-                LocalDate currentDate = LocalDate.now();
+                LocalDateTime currentDateTime = DateTimes.now();
+                LocalDate currentDate = currentDateTime.toLocalDate();
                 if (!currentDate.isBefore(startDate) && !currentDate.isAfter(endDate)) {
-                    System.out.println(name+","+startDate+","+endDate+","+currentDate);
                     promotions.add(new Promotion(name, buy, get, startDate, endDate));
                 }
 

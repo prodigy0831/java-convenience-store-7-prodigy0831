@@ -14,8 +14,8 @@ public class OrderController {
         this.orderService = new OrderService(productRepository);
     }
 
-    public void Order(List<RequestedProduct> requestedProductList) {
-        Receipt receipt = orderService.order(requestedProductList);
+    public void order(List<RequestedProduct> requestedProduct) {
+        Receipt receipt = orderService.order(requestedProduct);
         receipt.print();
     }
 

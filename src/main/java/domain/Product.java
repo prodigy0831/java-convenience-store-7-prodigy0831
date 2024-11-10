@@ -12,10 +12,8 @@ public class Product {
     private PromotionType promotionType;
 
     //만들어지는 시점에 validate를 체크한다
-    public Product(String name, int price, int quantity, String promotionName, PromotionType promotionType,boolean isPromo) {
-        if(name.equals("감자칩")){
-            System.out.println("감자칩은"+isPromo);
-        }
+    public Product(String name, int price, int quantity, String promotionName, PromotionType promotionType,
+                   boolean isPromo) {
         this.name = name;
         this.price = price;
         this.promotionName = promotionName;
@@ -39,32 +37,39 @@ public class Product {
     public String getPromotionName() {
         return promotionName;
     }
-    public int getPromotionQuantity(){
+
+    public int getPromotionQuantity() {
         return promotionQuantity;
     }
-    public int getGeneralQuantity(){
+
+    public int getGeneralQuantity() {
         return generalQuantity;
     }
-    public int getTotalQuantity(){
-        return promotionQuantity+generalQuantity;
+
+    public int getTotalQuantity() {
+        return promotionQuantity + generalQuantity;
     }
-    public void addPromotionQuantity(int quantity){
-        this.promotionQuantity+=quantity;
+
+    public void addPromotionQuantity(int quantity) {
+        this.promotionQuantity += quantity;
     }
-    public void addGeneralQuantity(int quantity){
-        this.generalQuantity+=quantity;
+
+    public void addGeneralQuantity(int quantity) {
+        this.generalQuantity += quantity;
     }
-    public void reducePromotionQuantity(int quantity){
-        if(this.promotionQuantity>=quantity){
-            this.promotionQuantity-=quantity;
-        }else{
+
+    public void reducePromotionQuantity(int quantity) {
+        if (this.promotionQuantity >= quantity) {
+            this.promotionQuantity -= quantity;
+        } else {
             throw new IllegalArgumentException("프로모션 재고 수량 부족");
         }
     }
-    public void reduceGeneralQuantity(int quantity){
-        if(this.generalQuantity>=quantity){
-            this.generalQuantity-=quantity;
-        }else{
+
+    public void reduceGeneralQuantity(int quantity) {
+        if (this.generalQuantity >= quantity) {
+            this.generalQuantity -= quantity;
+        } else {
             throw new IllegalArgumentException("재고 부족");
         }
     }
@@ -73,7 +78,7 @@ public class Product {
         return promotionType;
     }
 
-    public boolean hasPromo(){
-        return promotionType !=PromotionType.NONE;
+    public boolean hasPromo() {
+        return promotionType != PromotionType.NONE;
     }
 }

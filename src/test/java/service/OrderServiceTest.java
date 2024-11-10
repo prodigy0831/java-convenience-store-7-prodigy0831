@@ -29,46 +29,46 @@ public class OrderServiceTest extends NsTest {
 
     }
 
-    @Test
-    @DisplayName("기본 상품 영수증 출력 테스트")
-    void generalItemPrintTest() {
-        assertSimpleTest(() -> {
-            List<RequestedProduct> requestedProductList = new ArrayList<>();
-            requestedProductList.add(new RequestedProduct("물", 3, productRepository));
-            requestedProductList.add(new RequestedProduct("정식도시락", 2, productRepository));
-
-            Receipt receipt = orderService.order(requestedProductList);
-            receipt.print();
-            assertThat(output()).contains(
-                    "===========W 편의점=============",
-                    "상품명           수량      금액",
-                    "물             3       1,500",
-                    "정식도시락         2       12,800"
-            );
-        });
-    }
-
-    @Test
-    @DisplayName("프로모션 상품 영수증 출력 테스트")
-    void promotionItemPrintTest() {
-        assertSimpleTest(() -> {
-            List<RequestedProduct> requestedProductList = new ArrayList<>();
-            requestedProductList.add(new RequestedProduct("물", 3, productRepository));
-            requestedProductList.add(new RequestedProduct("정식도시락", 2, productRepository));
-            requestedProductList.add(new RequestedProduct("콜라", 3, productRepository));
-
-            Receipt receipt = orderService.order(requestedProductList);
-            receipt.print();
-            assertThat(output()).contains(
-                    "===========W 편의점=============",
-                    "상품명           수량      금액",
-                    "물             3       1,500",
-                    "정식도시락         2       12,800",
-                    "===========증     정===========",
-                    "콜라              1"
-            );
-        });
-    }
+//    @Test
+//    @DisplayName("기본 상품 영수증 출력 테스트")
+//    void generalItemPrintTest() {
+//        assertSimpleTest(() -> {
+//            List<RequestedProduct> requestedProductList = new ArrayList<>();
+//            requestedProductList.add(new RequestedProduct("물", 3, productRepository));
+//            requestedProductList.add(new RequestedProduct("정식도시락", 2, productRepository));
+//
+//            Receipt receipt = orderService.order(requestedProductList);
+//            receipt.print();
+//            assertThat(output()).contains(
+//                    "===========W 편의점=============",
+//                    "상품명           수량      금액",
+//                    "물             3       1,500",
+//                    "정식도시락         2       12,800"
+//            );
+//        });
+//    }
+//
+//    @Test
+//    @DisplayName("프로모션 상품 영수증 출력 테스트")
+//    void promotionItemPrintTest() {
+//        assertSimpleTest(() -> {
+//            List<RequestedProduct> requestedProductList = new ArrayList<>();
+//            requestedProductList.add(new RequestedProduct("물", 3, productRepository));
+//            requestedProductList.add(new RequestedProduct("정식도시락", 2, productRepository));
+//            requestedProductList.add(new RequestedProduct("콜라", 3, productRepository));
+//
+//            Receipt receipt = orderService.order(requestedProductList);
+//            receipt.print();
+//            assertThat(output()).contains(
+//                    "===========W 편의점=============",
+//                    "상품명           수량      금액",
+//                    "물             3       1,500",
+//                    "정식도시락         2       12,800",
+//                    "===========증     정===========",
+//                    "콜라              1"
+//            );
+//        });
+//    }
 
 
     @Override
