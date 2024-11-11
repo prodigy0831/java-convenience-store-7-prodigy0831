@@ -1,6 +1,7 @@
 package contoroller;
 
 
+import domain.Membership;
 import domain.Receipt;
 import java.util.List;
 import repository.ProductRepository;
@@ -10,8 +11,8 @@ import service.RequestedProduct;
 public class OrderController {
     private final OrderService orderService;
 
-    public OrderController(ProductRepository productRepository) {
-        this.orderService = new OrderService(productRepository);
+    public OrderController(ProductRepository productRepository, Membership membership) {
+        this.orderService = new OrderService(productRepository,membership);
     }
 
     public void order(List<RequestedProduct> requestedProduct) {

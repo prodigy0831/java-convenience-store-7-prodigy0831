@@ -44,8 +44,8 @@ public class Receipt {
     }
 
 
-    public void useMembership(){
-        membershipDiscount = Membership.useMembership(totalGeneralAmount);
+    public void useMembership(Membership membership){
+        membershipDiscount = membership.useMembership(totalGeneralAmount);
     }
 
     public void print() {

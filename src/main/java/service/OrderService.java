@@ -1,5 +1,6 @@
 package service;
 
+import domain.Membership;
 import domain.Product;
 import domain.PromotionType;
 import domain.PurchaseProduct;
@@ -10,9 +11,11 @@ import view.InputView;
 
 public class OrderService {
     private final ProductRepository productRepository;
+    private final Membership membership;
 
-    public OrderService(ProductRepository productRepository) {
+    public OrderService(ProductRepository productRepository, Membership membership) {
         this.productRepository = productRepository;
+        this.membership = membership;
     }
 
     public Receipt order(List<RequestedProduct> requestedProducts) {
@@ -72,7 +75,7 @@ public class OrderService {
             }
         }
         if (InputView.confirmUseMembership().equals("Y")) {
-            receipt.useMembership();
+            receipt.useMembership(membership);
         }
         return receipt;
     }

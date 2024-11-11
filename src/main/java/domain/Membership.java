@@ -1,15 +1,14 @@
 package domain;
 
-import static java.lang.Math.max;
-
 public class Membership {
     private static final int MAX_MEMBERSHIP_DISCOUNT_AMOUNT = 8000;
-    private static int point = MAX_MEMBERSHIP_DISCOUNT_AMOUNT;
+    private int point;
 
-    private Membership() {
+    public Membership() {
+        this.point = MAX_MEMBERSHIP_DISCOUNT_AMOUNT;
     }
 
-    public static int useMembership(int price) {
+    public int useMembership(int price) {
         int discountAmount = (int) (price * 0.3);
         if (point < discountAmount) {
             discountAmount = point;
@@ -18,7 +17,4 @@ public class Membership {
         return discountAmount;
     }
 
-    public static void resetPoints() {
-        point = MAX_MEMBERSHIP_DISCOUNT_AMOUNT;
-    }
 }
