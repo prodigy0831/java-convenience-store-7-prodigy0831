@@ -10,7 +10,7 @@ public class OutputView {
     private static final NumberFormat currencyFormat = NumberFormat.getInstance();
 
     public static final String GREETING_MESSAGE = "안녕하세요. W편의점입니다.%n현재 보유하고 있는 상품입니다.%n%n";
-    public static final String RECEIPT_HEADER = "===========W 편의점=============";
+    public static final String RECEIPT_HEADER = "\n===========W 편의점=============";
     public static final String PROMOTION_HEADER = "===========증   정=============";
     public static final String RECEIPT_DIVIDER = "==============================";
     public static final String TOTAL_AMOUNT = "총구매액";

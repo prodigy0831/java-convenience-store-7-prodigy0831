@@ -74,10 +74,6 @@ public class PromotionRepository {
         reader.readLine();
     }
 
-    public List<Promotion> getPromotions() {
-        return Collections.unmodifiableList(promotions);
-    }
-
     public Optional<PromotionType> getPromotionTypeByName(String promotionName) {
         return promotions.stream()
                 .filter(promotion -> promotion.getName().equals(promotionName))

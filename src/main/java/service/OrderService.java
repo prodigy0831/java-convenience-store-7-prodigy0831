@@ -23,7 +23,7 @@ public class OrderService {
         this.membership = membership;
     }
 
-    public Receipt order(List<RequestedProduct> requestedProducts) {
+    public Receipt createOrder(List<RequestedProduct> requestedProducts) {
         Receipt receipt = new Receipt();
         for (RequestedProduct requestedProduct : requestedProducts) {
             processRequestedProduct(requestedProduct, receipt);

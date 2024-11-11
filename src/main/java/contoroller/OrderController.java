@@ -1,6 +1,5 @@
 package contoroller;
 
-
 import domain.Membership;
 import domain.Receipt;
 import java.util.List;
@@ -16,7 +15,7 @@ public class OrderController {
     }
 
     public void order(List<RequestedProduct> requestedProduct) {
-        Receipt receipt = orderService.order(requestedProduct);
+        Receipt receipt = orderService.createOrder(requestedProduct);
         receipt.print();
     }
 }

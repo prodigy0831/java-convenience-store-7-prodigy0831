@@ -32,7 +32,6 @@ public class ProductRepository {
         try (BufferedReader reader = new BufferedReader(new FileReader(PRODUCTS_FILE_PATH))) {
             skipHeader(reader);
             processProductLines(reader);
-
         } catch (IOException e) {
             System.out.println(FILE_LOADING_ERROR_MESSAGE);
         }

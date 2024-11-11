@@ -6,7 +6,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import camp.nextstep.edu.missionutils.test.NsTest;
 import domain.Membership;
 import domain.Receipt;
-import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +38,7 @@ public class OrderServiceTest extends NsTest {
             requestedProductList.add(new RequestedProduct("물", 3, productRepository));
             requestedProductList.add(new RequestedProduct("정식도시락", 2, productRepository));
 
-            Receipt receipt = orderService.order(requestedProductList);
+            Receipt receipt = orderService.createOrder(requestedProductList);
             receipt.print();
             assertThat(output()).contains(
                     "===========W 편의점=============",
@@ -59,7 +58,7 @@ public class OrderServiceTest extends NsTest {
             requestedProductList.add(new RequestedProduct("정식도시락", 2, productRepository));
             requestedProductList.add(new RequestedProduct("콜라", 3, productRepository));
 
-            Receipt receipt = orderService.order(requestedProductList);
+            Receipt receipt = orderService.createOrder(requestedProductList);
             receipt.print();
             assertThat(output()).contains(
                     "===========W 편의점=============",
