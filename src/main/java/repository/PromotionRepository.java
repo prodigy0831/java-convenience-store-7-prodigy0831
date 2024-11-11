@@ -20,7 +20,6 @@ public class PromotionRepository {
         loadPromotions();
     }
 
-
     private void loadPromotions() {
         try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/promotions.md"))) {
             String line;
@@ -48,7 +47,7 @@ public class PromotionRepository {
                 LocalDateTime currentDateTime = DateTimes.now();
                 LocalDate currentDate = currentDateTime.toLocalDate();
                 if (!currentDate.isBefore(startDate) && !currentDate.isAfter(endDate)) {
-                    promotions.add(new Promotion(name, promotionType,startDate, endDate));
+                    promotions.add(new Promotion(name, promotionType, startDate, endDate));
                 }
 
             }

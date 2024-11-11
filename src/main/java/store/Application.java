@@ -17,19 +17,17 @@ public class Application {
         StoreController storeController = new StoreController(productRepository);
 
         Membership membership = new Membership();
-        OrderController orderController = new OrderController(productRepository,membership);
+        OrderController orderController = new OrderController(productRepository, membership);
 
-
-        while (true) {
+        boolean isPurchasing = true;
+        while (isPurchasing) {
             storeController.showStock();
             List<RequestedProduct> requestedProducts = storeController.getValidRequestedProduct();
 
             orderController.order(requestedProducts);
 
             String answer = InputView.confirmAdditionalPurchase();
-            if (!answer.equalsIgnoreCase("Y")) {
-                break;
-            }
+            isPurchasing = answer.equalsIgnoreCase("Y");
         }
     }
 }

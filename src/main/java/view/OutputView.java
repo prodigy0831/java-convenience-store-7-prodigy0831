@@ -70,11 +70,12 @@ public class OutputView {
         }
     }
 
-    public static void printReceiptSummary(int totalAmount, int totalQuantity, int promotionDiscount, int membershipDiscount) {
+    public static void printReceiptSummary(int totalAmount, int totalQuantity, int promotionDiscount,
+                                           int membershipDiscount) {
         System.out.println("=============================");
-        System.out.printf("%-13s %-7d %-6s%n", "총구매액", totalQuantity, formatCurrency(totalAmount));
-        System.out.printf("%-13s %-6s%n", "행사할인", formatCurrency(promotionDiscount));
-        System.out.printf("%-13s %-6s%n", "멤버십할인", formatCurrency(membershipDiscount));
-        System.out.printf("%-13s %-6s%n", "내실돈", formatCurrency(totalAmount - promotionDiscount - membershipDiscount));
+        System.out.printf("%-13s %-7d %10s%n", "총구매액", totalQuantity, formatCurrency(totalAmount));
+        System.out.printf("%-13s %15s%n", "행사할인", formatCurrency(-promotionDiscount));
+        System.out.printf("%-13s %15s%n", "멤버십할인", formatCurrency(-membershipDiscount));
+        System.out.printf("%-13s %15s%n", "내실돈", formatCurrency(totalAmount - promotionDiscount - membershipDiscount));
     }
 }
