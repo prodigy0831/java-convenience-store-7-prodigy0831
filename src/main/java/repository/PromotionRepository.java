@@ -6,10 +6,8 @@ import domain.PromotionType;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +33,14 @@ public class PromotionRepository {
                 String name = data[0];
                 int buy = Integer.parseInt(data[1]);
                 int get = Integer.parseInt(data[2]);
+
+                PromotionType promotionType = PromotionType.NONE;
+                if (buy == 1 && get == 1) {
+                    promotionType = PromotionType.BUY_ONE_GET_ONE;
+                }
+                if (buy == 2 && get == 1) {
+                    promotionType = PromotionType.BUY_TWO_GET_ONE;
+                }
 //
                 LocalDate startDate = LocalDate.parse(data[3]);
                 LocalDate endDate = LocalDate.parse(data[4]);
@@ -42,7 +48,7 @@ public class PromotionRepository {
                 LocalDateTime currentDateTime = DateTimes.now();
                 LocalDate currentDate = currentDateTime.toLocalDate();
                 if (!currentDate.isBefore(startDate) && !currentDate.isAfter(endDate)) {
-                    promotions.add(new Promotion(name, buy, get, startDate, endDate));
+                    promotions.add(new Promotion(name, promotionType,startDate, endDate));
                 }
 
             }
@@ -55,9 +61,9 @@ public class PromotionRepository {
         return Collections.unmodifiableList(promotions);
     }
 
-    public Optional<PromotionType> getPromotionTypeByName(String promotionName){
+    public Optional<PromotionType> getPromotionTypeByName(String promotionName) {
         return promotions.stream()
-                .filter(promotion->promotion.getName().equals(promotionName))
+                .filter(promotion -> promotion.getName().equals(promotionName))
                 .map(Promotion::getPromotionType)
                 .findFirst();
     }
