@@ -1,5 +1,6 @@
 package contoroller;
 
+import domain.Product;
 import java.util.List;
 import java.util.Map;
 import repository.ProductRepository;
@@ -18,8 +19,8 @@ public class StoreController {
     }
 
     public void showStock() {
-        //outputview에는 repository를 넘기면 안된다. products의 배열을 넘겨야 한다.
-        OutputView.printProducts(productRepository);
+        List<Product> products = productRepository.getProducts();
+        OutputView.printProducts(products);
     }
 
     public List<RequestedProduct> getValidRequestedProduct() {
@@ -31,8 +32,5 @@ public class StoreController {
                 System.out.println(e.getMessage());
             }
         }
-    }
-    public ProductRepository getProductRepository(){
-        return productRepository;
     }
 }

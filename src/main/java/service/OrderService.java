@@ -58,11 +58,9 @@ public class OrderService {
         int promotionQuantity = stockProduct.getPromotionQuantity();
         PromotionType promotionType = stockProduct.getPromotionType();
         int divisor = promotionType.getDivisor();
-
         if (isAvailableForFreeItem(quantity, divisor, promotionQuantity)) {
             quantity = addFreeItem(totalProduct, quantity);
         }
-
         if (promotionQuantity >= quantity) {
             applyPromotion(stockProduct, totalProduct, quantity, receipt, divisor);
             return;

@@ -19,7 +19,5 @@ public class OrderController {
         Receipt receipt = orderService.order(requestedProduct);
         receipt.print();
     }
-
-
 }
 

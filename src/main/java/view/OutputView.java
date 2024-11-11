@@ -5,7 +5,6 @@ import domain.PromotionType;
 import domain.PurchaseProduct;
 import java.text.NumberFormat;
 import java.util.List;
-import repository.ProductRepository;
 
 public class OutputView {
     private static final NumberFormat currencyFormat = NumberFormat.getInstance();
@@ -19,9 +18,9 @@ public class OutputView {
     public static final String MEMBERSHIP_DISCOUNT = "멤버십할인";
     public static final String FINAL_AMOUNT = "내실돈";
 
-    public static void printProducts(ProductRepository productRepository) {
+    public static void printProducts(List<Product> products) {
         greetingMessage();
-        for (Product product : productRepository.getProducts()) {
+        for (Product product : products) {
             printProductByPromotion(product);
         }
     }
