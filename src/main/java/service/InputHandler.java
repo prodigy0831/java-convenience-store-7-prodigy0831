@@ -28,6 +28,27 @@ public class InputHandler {
         return parseRequestedProductList(items);
     }
 
+    private void validateInputFormat(String items) {
+        if (items == null || items.isBlank()) {
+            throw new IllegalArgumentException(INVALID_INPUT_FORMAT);
+        }
+        int pairCount = countPattern(items, "\\[.+?]");
+        int commaCount = countPattern(items, ",");
+
+        if (pairCount > 1 && commaCount != pairCount - 1) {
+            throw new IllegalArgumentException(INVALID_INPUT_FORMAT);
+        }
+    }
+
+    private int countPattern(String input, String pattern) {
+        Matcher matcher = Pattern.compile(pattern).matcher(input);
+        int count = 0;
+        while (matcher.find()) {
+            count++;
+        }
+        return count;
+    }
+
     private List<RequestedProduct> parseRequestedProductList(String items) {
         Map<String, Integer> productMap = new LinkedHashMap<>();//중복되는 item 주문을 한번에 처리
         for (String item : items.split(",")) {
@@ -45,12 +66,6 @@ public class InputHandler {
             requestedProductList.add(requestedProduct);
         }
         return requestedProductList;
-    }
-
-    private void validateInputFormat(String items) {
-        if (items == null || items.isBlank()) {
-            throw new IllegalArgumentException(INVALID_INPUT_FORMAT);
-        }
     }
 
 
