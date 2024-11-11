@@ -1,38 +1,28 @@
 package domain;
 
 public enum PromotionType {
-    NONE(1,0),
-    BUY_ONE_GET_ONE(1,1),
-    BUY_TWO_GET_ONE(2,1);
+    NONE(1, 0),
+    BUY_ONE_GET_ONE(1, 1),
+    BUY_TWO_GET_ONE(2, 1);
 
-    private int buyCount;
-    private int giveawayCount;
+    private final int buyCount;
+    private final int giveawayCount;
 
-    PromotionType(int buyCount,int giveawayCount){
+    PromotionType(int buyCount, int giveawayCount) {
         this.buyCount = buyCount;
         this.giveawayCount = giveawayCount;
     }
 
-    public int getDivisor(){
+    public int getDivisor() {
         return this.buyCount + this.giveawayCount;
     }
+
+    public static PromotionType fromBuyAndGet(int buy, int get) {
+        for (PromotionType type : PromotionType.values()) {
+            if (type.buyCount == buy && type.giveawayCount == get) {
+                return type;
+            }
+        }
+        return NONE;
+    }
 }
-
-
-//package domain;
-//
-//public enum PromotionType {
-//    NONE,
-//    BUY_ONE_GET_ONE,
-//    BUY_TWO_GET_ONE;
-//
-//    public int getDivisor() {
-//        if (this == BUY_ONE_GET_ONE) {
-//            return 2;
-//        }
-//        if (this == BUY_TWO_GET_ONE) {
-//            return 3;
-//        }
-//        return 1;
-//    }
-//}
