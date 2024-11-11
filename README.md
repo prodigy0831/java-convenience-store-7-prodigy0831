@@ -3,11 +3,13 @@
 ### 재고 관리
 - products.md 파일을 읽고 사용자가 볼 수 있게끔 가공한다.
 - promotions.md의 프로모션 목록들의 조건들을 product 클래스에 매핑한다.
-- products.md내 각각의 product의 정보와 promotion의 정보를 담고 있는 product 클래스를 생성한다.
-- 매 결제별로 products.md를 갱신하며 수량을 관리한다.(프로그램이 종료되고 재실행되어도)
+- products.md내 각각의 Product의 정보와 Promotion의 정보를 담고 있는 product 클래스를 생성한다.
+- 모든 Product를 담고 있는 ProductRepository를 생성한다.
+- 매 결제별로 ProductRepository를 통해 Product의 재고를 반영한다.
 ### 입력
 - 사용자가 입력한 상품의 가격과 수량을 기반으로 결제 금액을 산출한다.
 - 영수증이 출력된 후 추가 구매를 진행할지 종료할지 선택이 가능하다.
+- 멤버십 사용 여부를 입력받는다.
 - 입력이 잘못된 경우 에러를 발생시킨다.
 ### 프로모션
 - promotions.md 내의 promotion들을 저장하는 클래스를 만든다. 같은 품목이어도 promotion이 적용되는 수량과 그렇지 않은 수량을 따로 관리한다.

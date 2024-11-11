@@ -1,79 +1,44 @@
 package service;
 
-import static camp.nextstep.edu.missionutils.test.Assertions.assertSimpleTest;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 import camp.nextstep.edu.missionutils.test.NsTest;
-import domain.Membership;
-import domain.Receipt;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import repository.ProductRepository;
-import repository.PromotionRepository;
+import store.Application;
+import static camp.nextstep.edu.missionutils.test.Assertions.assertSimpleTest;
+import static org.assertj.core.api.Assertions.assertThat;
 
+class  OrderServiceTest extends NsTest {
 
-public class OrderServiceTest extends NsTest {
-
-    private ProductRepository productRepository;
-    private OrderService orderService;
-
-    @BeforeEach
-    void setUp() {
-        PromotionRepository promotionRepository = new PromotionRepository();
-        productRepository = new ProductRepository(promotionRepository);
-        Membership membership = new Membership();
-        orderService = new OrderService(productRepository, membership);
-
-    }
 
     @Test
-    @DisplayName("기본 상품 영수증 출력 테스트")
-    void generalItemPrintTest() {
+    @DisplayName("1+1 프로모션 재고 부족 테스트")
+    void insufficientStockTest1() {
         assertSimpleTest(() -> {
-            List<RequestedProduct> requestedProductList = new ArrayList<>();
-            requestedProductList.add(new RequestedProduct("물", 3, productRepository));
-            requestedProductList.add(new RequestedProduct("정식도시락", 2, productRepository));
-
-            Receipt receipt = orderService.createOrder(requestedProductList);
-            receipt.print();
-            assertThat(output()).contains(
-                    "===========W 편의점=============",
-                    "상품명           수량      금액",
-                    "물             3       1,500",
-                    "정식도시락         2       12,800"
-            );
+            run("[감자칩-6]", "Y", "N", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("감자칩2");
         });
     }
 
     @Test
-    @DisplayName("프로모션 상품 영수증 출력 테스트")
-    void promotionItemPrintTest() {
+    @DisplayName("2+1프로모션 재고 부족 테스트")
+    void insufficientStockTest2() {
         assertSimpleTest(() -> {
-            List<RequestedProduct> requestedProductList = new ArrayList<>();
-            requestedProductList.add(new RequestedProduct("물", 3, productRepository));
-            requestedProductList.add(new RequestedProduct("정식도시락", 2, productRepository));
-            requestedProductList.add(new RequestedProduct("콜라", 3, productRepository));
-
-            Receipt receipt = orderService.createOrder(requestedProductList);
-            receipt.print();
-            assertThat(output()).contains(
-                    "===========W 편의점=============",
-                    "상품명           수량      금액",
-                    "물             3       1,500",
-                    "정식도시락         2       12,800",
-                    "===========증     정===========",
-                    "콜라              1"
-            );
+            run("[사이다-9]", "N", "N", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("사이다6");
         });
     }
 
+    @Test
+    @DisplayName("프로모션 재고 부족시 프로모션을 적용하고 남은 프로모션 재고를 일반 재고로 넘겨야 한다.")
+    void lackOfPromoStockTest() {
+        assertSimpleTest(() -> {
+            run("[콜라-11]", "N", "N","Y");
+            assertThat(output().replaceAll("\\s", "")).contains("사이다6");
+        });
+    }
 
     @Override
-    protected void runMain() {
-
+    public void runMain() {
+        Application.main(new String[]{});
     }
 }
