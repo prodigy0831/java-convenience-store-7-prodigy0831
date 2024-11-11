@@ -1,6 +1,5 @@
 package service;
 
-import domain.Product;
 import java.util.ArrayList;
 import repository.ProductRepository;
 
@@ -12,12 +11,10 @@ import java.util.regex.Pattern;
 
 public class InputHandler {
     private final static String INVALID_INPUT_FORMAT = "[ERROR] 올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.";
-    private final static String PRODUCT_NOT_FOUND = "[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.";
-    private final static String OUT_OF_STOCK = "[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.";
     private static final Pattern INPUT_PATTERN = Pattern.compile("\\[(.+)-([0-9]+)]");
     public static final String COMMA_PATTERN = ",";
     public static final String PAIR_PATTERN = "\\[.+?]";
-    public static final String DELIMETER = ",";
+    public static final String DELIMITER = ",";
 
     private final ProductRepository productRepository;
 
@@ -53,7 +50,6 @@ public class InputHandler {
 
     private List<RequestedProduct> parseRequestedProductList(String items) {
         Map<String, Integer> productMap = parseProductMap(items);
-
         return createRequestedProduct(productMap);
     }
 
@@ -69,7 +65,7 @@ public class InputHandler {
 
     private Map<String, Integer> parseProductMap(String items) {
         Map<String, Integer> productMap = new LinkedHashMap<>();
-        for (String item : items.split(DELIMETER)) {
+        for (String item : items.split(DELIMITER)) {
             Matcher matcher = validateAndMatchInput(item);
             String productName = matcher.group(1);
             int productAmount = Integer.parseInt(matcher.group(2));
@@ -78,7 +74,6 @@ public class InputHandler {
         return productMap;
     }
 
-
     private Matcher validateAndMatchInput(String item) {
         Matcher matcher = INPUT_PATTERN.matcher(item);
         if (!matcher.matches()) {
@@ -86,5 +81,4 @@ public class InputHandler {
         }
         return matcher;
     }
-
 }

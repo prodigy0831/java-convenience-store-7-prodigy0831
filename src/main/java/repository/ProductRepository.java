@@ -101,10 +101,9 @@ public class ProductRepository {
         return products;
     }
 
-    public Product findProductByName(String productName) {
+    public Optional<Product> findProductByName(String productName) {
         return products.stream()
                 .filter(product -> Objects.equals(product.getName(), productName))
-                .findFirst()
-                .orElse(null);
+                .findFirst();
     }
 }
