@@ -37,11 +37,37 @@ class  OrderServiceTest extends NsTest {
         });
     }
     @Test
-    @DisplayName("프로모션 재고 부족시 프로모션을 적용하고 남은 프로모션 재고를 일반 재고로 넘겨야 한다.")
-    void lackOfPromoStockTes1t() {
+    @DisplayName("2+1 프로모션 재고 부족시 프로모션을 적용하고 남은 프로모션 재고를 일반 재고로 넘겨야 한다.")
+    void lackOfPromoStockTest2() {
         assertSimpleTest(() -> {
             run("[콜라-9]", "Y", "Y","[콜라-1]","Y","N");
             assertThat(output().replaceAll("\\s", "")).contains("내실돈700");
+        });
+    }
+    @Test
+    @DisplayName("1+1 프로모션 재고 부족시 프로모션을 적용하고 남은 프로모션 재고를 일반 재고로 넘겨야 한다.")
+    void lackOfPromoStockTest3() {
+        assertSimpleTest(() -> {
+            run("[초코바-8]", "Y", "Y","Y","[초코바-2]","Y","N");
+            assertThat(output().replaceAll("\\s", "")).contains("초코바1,200원2개");
+        });
+    }
+
+    @Test
+    @DisplayName("멤버십 할인의 최대 한도는 8000원이어야 한다.")
+    void useMembershipPointTest() {
+        assertSimpleTest(() -> {
+            run("[정식도시락-5]","Y","N");
+            assertThat(output().replaceAll("\\s", "")).contains("멤버십할인-8,000");
+        });
+    }
+
+    @Test
+    @DisplayName("다회차 결제에도 멤버십 할인의 최대 한도는 8000원이어야 한다.")
+    void useMembershipPointTest2() {
+        assertSimpleTest(() -> {
+            run("[정식도시락-4]","Y","Y","[정식도시락-4]","Y","N");
+            assertThat(output().replaceAll("\\s", "")).contains("멤버십할인-320");
         });
     }
 
