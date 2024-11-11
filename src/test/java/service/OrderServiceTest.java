@@ -29,11 +29,19 @@ class  OrderServiceTest extends NsTest {
     }
 
     @Test
-    @DisplayName("프로모션 재고 부족시 프로모션을 적용하고 남은 프로모션 재고를 일반 재고로 넘겨야 한다.")
+    @DisplayName("프로모션 재고 소진 후 일반 재고 소진시 프로모션 적용 여부를 묻지 않아야 한다.")
     void lackOfPromoStockTest() {
         assertSimpleTest(() -> {
-            run("[콜라-11]", "N", "N","Y");
-            assertThat(output().replaceAll("\\s", "")).contains("사이다6");
+            run("[콜라-11]", "Y", "Y","Y","[콜라-3]","Y","Y","[물-1]","N","N","N");
+            assertThat(output().replaceAll("\\s", "")).contains("콜라1,000원6개");
+        });
+    }
+    @Test
+    @DisplayName("프로모션 재고 부족시 프로모션을 적용하고 남은 프로모션 재고를 일반 재고로 넘겨야 한다.")
+    void lackOfPromoStockTes1t() {
+        assertSimpleTest(() -> {
+            run("[콜라-9]", "Y", "Y","[콜라-1]","Y","N");
+            assertThat(output().replaceAll("\\s", "")).contains("내실돈700");
         });
     }
 

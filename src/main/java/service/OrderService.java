@@ -57,6 +57,12 @@ public class OrderService {
     private void handlePromotion(Product stockProduct, PurchaseProduct totalProduct, int quantity, Receipt receipt) {
         int promotionQuantity = stockProduct.getPromotionQuantity();
         PromotionType promotionType = stockProduct.getPromotionType();
+        int buyCount = promotionType.getBuyCount();
+
+        if(promotionQuantity<=buyCount){
+            applyGeneralItem(stockProduct,totalProduct,receipt);
+            return;
+        }
         int divisor = promotionType.getDivisor();
         if (isAvailableForFreeItem(quantity, divisor, promotionQuantity)) {
             quantity = addFreeItem(totalProduct, quantity);

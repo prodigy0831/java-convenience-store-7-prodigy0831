@@ -17,6 +17,10 @@ public enum PromotionType {
         return this.buyCount + this.giveawayCount;
     }
 
+    public int getBuyCount() {
+        return this.buyCount;
+    }
+
     public static PromotionType fromBuyAndGet(int buy, int get) {
         for (PromotionType type : PromotionType.values()) {
             if (type.buyCount == buy && type.giveawayCount == get) {
