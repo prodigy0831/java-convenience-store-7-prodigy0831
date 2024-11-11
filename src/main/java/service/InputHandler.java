@@ -15,6 +15,9 @@ public class InputHandler {
     private final static String PRODUCT_NOT_FOUND = "[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.";
     private final static String OUT_OF_STOCK = "[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.";
     private static final Pattern INPUT_PATTERN = Pattern.compile("\\[(.+)-([0-9]+)]");
+    public static final String COMMA_PATTERN = ",";
+    public static final String PAIR_PATTERN = "\\[.+?]";
+    public static final String DELIMETER = ",";
 
     private final ProductRepository productRepository;
 
@@ -24,7 +27,6 @@ public class InputHandler {
 
     public List<RequestedProduct> processInput(String items) {
         validateInputFormat(items);
-
         return parseRequestedProductList(items);
     }
 
@@ -32,8 +34,8 @@ public class InputHandler {
         if (items == null || items.isBlank()) {
             throw new IllegalArgumentException(INVALID_INPUT_FORMAT);
         }
-        int pairCount = countPattern(items, "\\[.+?]");
-        int commaCount = countPattern(items, ",");
+        int pairCount = countPattern(items, PAIR_PATTERN);
+        int commaCount = countPattern(items, COMMA_PATTERN);
 
         if (pairCount > 1 && commaCount != pairCount - 1) {
             throw new IllegalArgumentException(INVALID_INPUT_FORMAT);
@@ -50,15 +52,12 @@ public class InputHandler {
     }
 
     private List<RequestedProduct> parseRequestedProductList(String items) {
-        Map<String, Integer> productMap = new LinkedHashMap<>();//중복되는 item 주문을 한번에 처리
-        for (String item : items.split(",")) {
-            Matcher matcher = validateAndMatchInput(item);
-            String productName = matcher.group(1);
-            int productAmount = Integer.parseInt(matcher.group(2));
+        Map<String, Integer> productMap = parseProductMap(items);
 
-            productMap.put(productName, productMap.getOrDefault(productName, 0) + productAmount);
-        }
+        return createRequestedProduct(productMap);
+    }
 
+    private List<RequestedProduct> createRequestedProduct(Map<String, Integer> productMap) {
         List<RequestedProduct> requestedProductList = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : productMap.entrySet()) {
             RequestedProduct requestedProduct = new RequestedProduct(entry.getKey(), entry.getValue(),
@@ -66,6 +65,17 @@ public class InputHandler {
             requestedProductList.add(requestedProduct);
         }
         return requestedProductList;
+    }
+
+    private Map<String, Integer> parseProductMap(String items) {
+        Map<String, Integer> productMap = new LinkedHashMap<>();
+        for (String item : items.split(DELIMETER)) {
+            Matcher matcher = validateAndMatchInput(item);
+            String productName = matcher.group(1);
+            int productAmount = Integer.parseInt(matcher.group(2));
+            productMap.put(productName, productMap.getOrDefault(productName, 0) + productAmount);
+        }
+        return productMap;
     }
 
 
