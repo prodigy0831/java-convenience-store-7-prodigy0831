@@ -62,10 +62,10 @@ public class ProductRepository {
 
     private void addOrUpdateProduct(String name, int price, int quantity, String promotion,
                                     PromotionType promotionType, boolean isPromo) {
-        Optional<Product> existingProduct = findExistingProduct(name);
-
-        existingProduct.ifPresent(product -> updateProductQuantity(product, quantity, isPromo));
-        addNewProduct(name, price, quantity, promotion, promotionType, isPromo);
+        findExistingProduct(name).ifPresentOrElse(
+                product -> updateProductQuantity(product, quantity, isPromo),
+                () -> addNewProduct(name, price, quantity, promotion, promotionType, isPromo)
+        );
     }
 
     private void updateProductQuantity(Product product, int quantity, boolean isPromo) {

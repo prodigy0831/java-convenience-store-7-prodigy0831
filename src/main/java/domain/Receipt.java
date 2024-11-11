@@ -8,43 +8,49 @@ import service.RequestedProduct;
 import view.OutputView;
 
 public class Receipt {
+    private static final int INITIAL_AMOUNT = 0;
+    private static final int INITIAL_QUANTITY = 0;
+
     private final List<PurchaseProduct> purchasedItems;
     private final List<PurchaseProduct> promoItems;
     private int totalAmount;
     private int promotionDiscount;
     private int membershipDiscount;
-    private int finalAmount;
     private int totalGeneralAmount;
     private int totalQuantity;
 
     public Receipt() {
         this.purchasedItems = new ArrayList<>();
         this.promoItems = new ArrayList<>();
-        this.totalAmount = 0;
-        this.promotionDiscount = 0;
-        this.finalAmount = 0;
-        this.membershipDiscount = 0;
-        this.totalGeneralAmount = 0;
-        this.totalQuantity = 0;
+        this.totalAmount = INITIAL_AMOUNT;
+        this.promotionDiscount = INITIAL_AMOUNT;
+        this.membershipDiscount = INITIAL_AMOUNT;
+        this.totalGeneralAmount = INITIAL_AMOUNT;
+        this.totalQuantity = INITIAL_QUANTITY;
 
     }
 
-    public void applyPromoItem(PurchaseProduct promoProduct,int divisor) {
+    public void applyPromoItem(PurchaseProduct promoProduct, int divisor) {
         promoItems.add(promoProduct);
-        promotionDiscount+=promoProduct.getPrice()*promoProduct.getQuantity();
-        totalGeneralAmount-=promotionDiscount*divisor;
+        int promoAmount = calculateAmount(promoProduct);
+        promotionDiscount += promoAmount;
+        totalGeneralAmount -= promoAmount * divisor;
     }
 
     public void applyGeneralItem(PurchaseProduct purchaseProduct) {
         purchasedItems.add(purchaseProduct);
-        int purchaseAmount = purchaseProduct.getPrice() * purchaseProduct.getQuantity();
+        int purchaseAmount = calculateAmount(purchaseProduct);
         totalAmount += purchaseAmount;
-        totalGeneralAmount+=purchaseAmount;
-        totalQuantity+=purchaseProduct.getQuantity();
+        totalGeneralAmount += purchaseAmount;
+        totalQuantity += purchaseProduct.getQuantity();
+    }
+
+    public int calculateAmount(PurchaseProduct product) {
+        return product.getPrice() * product.getQuantity();
     }
 
 
-    public void useMembership(Membership membership){
+    public void useMembership(Membership membership) {
         membershipDiscount = membership.useMembership(totalGeneralAmount);
     }
 
@@ -53,7 +59,6 @@ public class Receipt {
         if (!promoItems.isEmpty()) {
             OutputView.printPromotionReceipt(promoItems);
         }
-        OutputView.printReceiptSummary(totalAmount,totalQuantity,promotionDiscount,membershipDiscount);
-
+        OutputView.printReceiptSummary(totalAmount, totalQuantity, promotionDiscount, membershipDiscount);
     }
 }
