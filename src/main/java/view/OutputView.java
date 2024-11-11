@@ -49,22 +49,18 @@ public class OutputView {
         }
     }
 
-    private static String formatCurrency(int value) {
-        return currencyFormat.format(value);
-    }
-
     public static void printReceipt(List<PurchaseProduct> purchasedItems) {
         System.out.println("===========W 편의점=============");
-        System.out.printf("%-13s %-7s %-6s%n", "상품명", "수량", "금액");
+        System.out.printf("%-14s %-6s %-6s%n", "상품명", "수량", "금액");
 
         for (PurchaseProduct item : purchasedItems) {
             int totalPrice = item.getPrice() * item.getQuantity();
-            System.out.printf("%-13s %-7d %-6s%n", item.getName(), item.getQuantity(), formatCurrency(totalPrice));
+            System.out.printf("%-14s %-6d %-6s%n", item.getName(), item.getQuantity(), formatCurrency(totalPrice));
         }
     }
 
     public static void printPromotionReceipt(List<PurchaseProduct> promoItems) {
-        System.out.println("===========증     정===========");
+        System.out.println("===========증   정=============");
         for (PurchaseProduct item : promoItems) {
             System.out.printf("%-13s %-6s%n", item.getName(), item.getQuantity());
         }
@@ -72,10 +68,18 @@ public class OutputView {
 
     public static void printReceiptSummary(int totalAmount, int totalQuantity, int promotionDiscount,
                                            int membershipDiscount) {
-        System.out.println("=============================");
-        System.out.printf("%-13s %-7d %10s%n", "총구매액", totalQuantity, formatCurrency(totalAmount));
-        System.out.printf("%-13s %15s%n", "행사할인", formatCurrency(-promotionDiscount));
-        System.out.printf("%-13s %15s%n", "멤버십할인", formatCurrency(-membershipDiscount));
-        System.out.printf("%-13s %15s%n", "내실돈", formatCurrency(totalAmount - promotionDiscount - membershipDiscount));
+        System.out.println("==============================");
+        System.out.printf("%-14s %-6d %-6s%n", "총구매액", totalQuantity, formatCurrency(totalAmount));
+        System.out.printf("%-20s %-6s%n", "행사할인", formatCurrencyWithMinus(promotionDiscount));
+        System.out.printf("%-20s %-6s%n", "멤버십할인", formatCurrencyWithMinus(membershipDiscount));
+        System.out.printf("%-20s %-6s%n", "내실돈", formatCurrency(totalAmount - promotionDiscount - membershipDiscount));
+    }
+
+    private static String formatCurrency(int value) {
+        return currencyFormat.format(value);
+    }
+
+    private static String formatCurrencyWithMinus(int amount){
+        return "-"+formatCurrency(amount);
     }
 }
